@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Services - Specyf</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: rgb(185, 54, 34);
+            --primary-light: rgba(185, 54, 34, 0.1);
+            --white: #ffffff;
+            --text-color: #333;
+            --text-color-light: #666;
+            --background-color: #f7f7f7;
+            --gray-100: #f8f9fa;
+            --gray-200: #e9ecef;
+            --gray-800: #343a40;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--gray-800);
+            background-color: var(--gray-100);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header Styles */
+        header {
+            background: var(--background-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 64px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+            flex: 2;
+            padding: 0 20px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 100px;
+        }
+
+        .social-icons a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 18px;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            margin-top: 70px; /* Add space for fixed header */
+        }
+
+        .services-hero {
+            position: relative;
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2c1810 100%);
+            color: var(--white);
+            overflow: hidden;
+        }
+
+        .services-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1500') center/cover;
+            opacity: 0.1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            position: relative;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .services-grid {
+            padding: 80px 0;
+            background: var(--white);
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .service-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .service-title {
+            font-size: 1.5rem;
+            color: var(--gray-800);
+            margin-bottom: 1rem;
+        }
+
+        .service-description {
+            color: var(--gray-800);
+            margin-bottom: 1.5rem;
+        }
+
+        .features-section {
+            padding: 80px 0;
+            background: var(--gray-100);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--gray-800);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-item {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            color: var(--gray-800);
+            margin-bottom: 0.5rem;
+        }
+
+        .cta-section {
+            padding: 80px 0;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #2c1810 100%);
+            color: var(--white);
+            text-align: center;
+        }
+
+        .cta-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: var(--white);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 2rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                width: 100px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-company-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-links {
+                align-items: center;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: white;
+            padding: 60px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(185,54,34,0.2) 0%, rgba(185,54,34,1) 50%, rgba(185,54,34,0.2) 100%);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .footer-company-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .company-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        .footer-links h3, .footer-social h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: #444;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #444;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .social-link:hover {
+            color: var(--primary-color);
+        }
+
+        .social-link i {
+            width: 20px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Specyf</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="login.html">Login</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/@specyf40407" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="services-hero">
+            <div class="container">
+                <div class="hero-content animate">
+                    <h1 class="hero-title">Professional Services That Drive Success</h1>
+                    <p class="hero-subtitle">Comprehensive solutions tailored to elevate your business performance</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-grid">
+            <div class="container">
+                <h2 class="section-title animate">Our Services</h2>
+                <div class="service-cards">
+                    <div class="service-card animate">
+                        <i class="fas fa-chart-line service-icon"></i>
+                        <h3 class="service-title">Business Strategy</h3>
+                        <p class="service-description">Develop winning strategies to drive growth and maximize market opportunities</p>
+                    </div>
+                    <div class="service-card animate">
+                        <i class="fas fa-cogs service-icon"></i>
+                        <h3 class="service-title">Process Optimization</h3>
+                        <p class="service-description">Streamline operations and enhance efficiency through proven methodologies</p>
+                    </div>
+                    <div class="service-card animate">
+                        <i class="fas fa-users-cog service-icon"></i>
+                        <h3 class="service-title">Change Management</h3>
+                        <p class="service-description">Guide your organization through transformational changes effectively</p>
+                    </div>
+                    <div class="service-card animate">
+                        <i class="fas fa-laptop-code service-icon"></i>
+                        <h3 class="service-title">Digital Transformation</h3>
+                        <p class="service-description">Leverage technology to revolutionize your business processes</p>
+                    </div>
+                    <div class="service-card animate">
+                        <i class="fas fa-shield-alt service-icon"></i>
+                        <h3 class="service-title">Risk Management</h3>
+                        <p class="service-description">Identify and mitigate risks while ensuring compliance</p>
+                    </div>
+                    <div class="service-card animate">
+                        <i class="fas fa-handshake service-icon"></i>
+                        <h3 class="service-title">Strategic Partnerships</h3>
+                        <p class="service-description">Build and maintain valuable business relationships</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="features-section">
+            <div class="container">
+                <h2 class="section-title animate">Why Choose Us</h2>
+                <div class="features-grid">
+                    <div class="feature-item animate">
+                        <i class="fas fa-check-circle feature-icon"></i>
+                        <h3 class="feature-title">Proven Expertise</h3>
+                        <p>Years of experience delivering successful outcomes</p>
+                    </div>
+                    <div class="feature-item animate">
+                        <i class="fas fa-clock feature-icon"></i>
+                        <h3 class="feature-title">Timely Delivery</h3>
+                        <p>Consistent and reliable project execution</p>
+                    </div>
+                    <div class="feature-item animate">
+                        <i class="fas fa-user-tie feature-icon"></i>
+                        <h3 class="feature-title">Professional Team</h3>
+                        <p>Skilled experts dedicated to your success</p>
+                    </div>
+                    <div class="feature-item animate">
+                        <i class="fas fa-chart-bar feature-icon"></i>
+                        <h3 class="feature-title">Measurable Results</h3>
+                        <p>Data-driven approach to ensure success</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="container">
+                <div class="cta-content animate">
+                    <h2 class="cta-title">Ready to Transform Your Business?</h2>
+                    <p>Let's discuss how we can help you achieve your business goals</p>
+                    <a href="contact.html" class="cta-button">Get Started</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-company-info">
+                <a href="index.html" class="footer-logo">Specyf</a>
+                <p class="company-description">
+                    Empowering businesses with innovative solutions and exceptional service. 
+                    Your success is our priority.
+                </p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://facebook.com/specyf" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="https://instagram.com/_specyf_" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://x.com/@specyf40407" target="_blank" class="social-link">
+                        <i class="fa-brands fa-x"></i>
+                        <span>X (Twitter)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Specyf. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/services.js"></script>
+</body>
+</html>

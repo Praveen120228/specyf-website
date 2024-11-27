@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Specyf - Professional Business Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: rgb(185, 54, 34);
+            --primary-light: rgba(185, 54, 34, 0.1);
+            --white: #ffffff;
+            --text-color: #333;
+            --text-color-light: #666;
+            --background-color: #f7f7f7;
+        }
+
+        body {
+            background: var(--white);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: var(--background-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            height: 64px;
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            justify-content: center;
+            flex: 2;
+            padding: 0 20px;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+            background: var(--primary-light);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex: 1;
+            justify-content: flex-end;
+            min-width: 100px;
+        }
+
+        .social-icons a {
+            color: #333;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 18px;
+        }
+
+        .social-icons a:hover {
+            color: var(--primary-color);
+        }
+
+        main {
+            margin-top: 70px; /* Add space for fixed header */
+        }
+
+        .hero {
+            position: relative;
+            padding: 100px 5%;
+            background: linear-gradient(135deg, var(--white) 0%, var(--primary-light) 100%);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B93622' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-color);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--text-color-light);
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+        }
+
+        .cards-container {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 3rem 0;
+            flex-wrap: wrap;
+        }
+
+        .info-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 350px;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .cta-button {
+            padding: 0.8rem 2rem;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .cta-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: 2px solid var(--primary-color);
+            font-size: 1.1rem;
+            padding: 1rem 2.5rem;
+        }
+
+        .cta-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .cta-primary:hover {
+            background-color: rgb(165, 48, 30);
+            border-color: rgb(165, 48, 30);
+            transform: translateY(-2px);
+        }
+
+        .cta-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .services-slider {
+            padding: 4rem 0;
+            background: var(--white);
+        }
+
+        .slider-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        .slider-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 2rem;
+        }
+
+        .service-card {
+            min-width: 300px;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .testimonials {
+            padding: 4rem 0;
+            background: var(--primary-light);
+        }
+
+        .testimonial-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 350px;
+        }
+
+        footer {
+            background: white;
+            padding: 60px 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, rgba(185,54,34,0.2) 0%, rgba(185,54,34,1) 50%, rgba(185,54,34,0.2) 100%);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            padding: 0 20px;
+        }
+
+        .footer-company-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            width: 40px;
+            height: 40px;
+        }
+
+        .company-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 15px;
+        }
+
+        .footer-links h3, .footer-social h3 {
+            color: rgb(185, 54, 34);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-links a {
+            color: #444;
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: rgb(185, 54, 34);
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #444;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-size: 1rem;
+        }
+
+        .social-link:hover {
+            color: rgb(185, 54, 34);
+        }
+
+        .social-link i {
+            width: 20px;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .footer-company-info {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .social-links {
+                align-items: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .nav-links a {
+                font-size: 0.9rem;
+            }
+
+            .logo {
+                width: 100px;
+            }
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">Specyf</div>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="about.html">About</a>
+                <a href="services.html">Services</a>
+                <a href="login.html">Login</a>
+            </div>
+            <div class="social-icons">
+                <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                <a href="https://x.com/@specyf40407" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x"></i></a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Empowering Businesses with Tailored Workforce Solutions</h1>
+                <p>Manpower services for homes, industries, and companies—fast, reliable, and efficient.</p>
+                
+                <div class="cards-container">
+                    <div class="info-card">
+                        <h3>Services</h3>
+                        <p><strong>Urgent Staffing Solutions</strong></p>
+                        <p>Immediate workforce support for your business needs</p>
+                        <p><strong>24/7 Availability</strong></p>
+                        <p>Round-the-clock service for emergencies</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Why Choose Us</h3>
+                        <p><strong>5+ Years Experience</strong></p>
+                        <p>Trusted by businesses across industries</p>
+                        <p><strong>98% Satisfaction Rate</strong></p>
+                        <p>Committed to excellence in service delivery</p>
+                    </div>
+                </div>
+
+                <div class="cta-buttons">
+                    <a href="login.html" class="cta-button cta-primary">Get Started</a>
+                    <a href="about.html" class="cta-button cta-secondary">Learn More</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="services-slider">
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="service-card">
+                        <i class="fas fa-home fa-2x" style="color: var(--primary-color)"></i>
+                        <h3>Household Assistance</h3>
+                        <p>Professional domestic staff for your home</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-industry fa-2x" style="color: var(--primary-color)"></i>
+                        <h3>Industrial Staffing</h3>
+                        <p>Skilled workforce for manufacturing and production</p>
+                    </div>
+                    <div class="service-card">
+                        <i class="fas fa-building fa-2x" style="color: var(--primary-color)"></i>
+                        <h3>Corporate Support</h3>
+                        <p>Professional staff for office operations</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="testimonial-container">
+                <div class="testimonial-card">
+                    <p>"Specyf has been instrumental in helping us scale our operations with quality staff."</p>
+                    <p><strong>- John Doe, CEO</strong></p>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Their quick response and professional service have made them our go-to staffing partner."</p>
+                    <p><strong>- Jane Smith, HR Director</strong></p>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Excellent service quality and reliable support for all our staffing needs."</p>
+                    <p><strong>- Mike Johnson, Operations Manager</strong></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-company-info">
+                <img src="assets/logo.png" alt="Specyf Logo" class="footer-logo">
+                <div>
+                    <h3>Specyf</h3>
+                    <p class="company-description">Empowering businesses through innovative professional services and solutions. Your success is our priority.</p>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-social">
+                <h3>Connect With Us</h3>
+                <div class="social-links">
+                    <a href="https://facebook.com/specyf" target="_blank" class="social-link">
+                        <i class="fab fa-facebook"></i>
+                        <span>Facebook</span>
+                    </a>
+                    <a href="https://instagram.com/specyf" target="_blank" class="social-link">
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a>
+                    <a href="https://x.com/@specyf40407" target="_blank" class="social-link">
+                        <i class="fab fa-twitter"></i>
+                        <span>X (Twitter)</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 Specyf. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Services slider animation
+        const sliderTrack = document.querySelector('.slider-track');
+        let currentPosition = 0;
+
+        function slideServices() {
+            currentPosition -= 320; // Width of card + gap
+            if (currentPosition < -(sliderTrack.scrollWidth - sliderTrack.clientWidth)) {
+                currentPosition = 0;
+            }
+            sliderTrack.style.transform = `translateX(${currentPosition}px)`;
+        }
+
+        setInterval(slideServices, 3000);
+    </script>
+</body>
+</html>
