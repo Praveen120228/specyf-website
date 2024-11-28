@@ -104,6 +104,10 @@
 
             nav {
                 padding: 0;
+                display: grid;
+                grid-template-columns: auto 1fr auto;
+                align-items: center;
+                gap: 10px;
             }
 
             .mobile-menu-toggle {
@@ -111,13 +115,16 @@
                 align-items: center;
                 justify-content: center;
                 order: 1;
+                margin-right: 10px;
             }
 
             .logo {
                 font-size: 24px;
                 order: 2;
                 text-align: center;
-                margin: 0 auto;
+                justify-self: center;
+                margin: 0;
+                padding: 0;
             }
 
             .nav-links {
@@ -133,6 +140,7 @@
                 padding: 20px;
                 transition: all 0.3s ease-in-out;
                 box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                order: 3;
             }
 
             .nav-links.active {
