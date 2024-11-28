@@ -31,42 +31,54 @@
 
         /* Header Styles */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
             z-index: 1000;
+            transition: all 0.4s ease;
             height: 80px;
-            padding: 0;
+            padding: 0 20px;
+        }
+
+        header.scrolled {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
         }
 
         nav {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 20px;
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 100%;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-            justify-content: center;
-            flex: 2;
+            gap: 2rem;
         }
 
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: var(--primary-color);
+            color: #333;
             text-decoration: none;
-            flex: 1;
-            min-width: 100px;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo:hover {
+            color: #007bff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
         }
 
         .nav-links a {
@@ -74,39 +86,35 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 16px;
-            transition: all 0.3s ease;
             padding: 8px 16px;
-            border-radius: 4px;
-            white-space: nowrap;
+            border-radius: 8px;
+            transition: all 0.4s ease;
         }
 
         .nav-links a:hover {
-            color: var(--primary-color);
-            background: var(--primary-light);
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
         }
 
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex: 1;
-            justify-content: flex-end;
-            min-width: 100px;
+        .nav-links a.active {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
         }
 
-        .social-icons a {
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
             color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 18px;
+            transition: all 0.4s ease;
         }
 
-        .social-icons a:hover {
-            color: var(--primary-color);
+        .mobile-menu-toggle:hover {
+            color: #007bff;
         }
 
         main {
-            padding-top: 80px;
+            margin-top: 80px;
         }
 
         .services-hero {
@@ -673,7 +681,7 @@
                 <a href="about.html">About</a>
                 <a href="services.html" class="active">Services</a>
                 <a href="contact.html">Contact</a>
-                <a href="login.html" class="login-btn">Login</a>
+                <a href="login.html">Login</a>
             </div>
         </nav>
     </header>

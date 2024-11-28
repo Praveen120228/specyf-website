@@ -13,13 +13,91 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         /* Header override styles */
-        header .logo {
-            font-size: 24px !important;
-            min-width: auto !important;
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.4s ease;
+            height: 80px;
+            padding: 0 20px;
         }
 
-        header .logo i {
-            font-size: 24px !important;
+        header.scrolled {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo:hover {
+            color: #007bff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .nav-links a.active {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #333;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            color: #007bff;
+        }
+
+        main {
+            margin-top: 80px;
         }
 
         /* Login specific styles */
@@ -437,8 +515,8 @@
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
                 <a href="contact.html">Contact</a>
+                <a href="login.html" class="active">Login</a>
             </div>
-            <a href="login.html" class="login-btn active">Login</a>
         </nav>
     </header>
 
@@ -544,91 +622,219 @@
     </footer>
 
     <script>
-        // Get registered users
-        function getRegisteredUsers() {
-            const users = localStorage.getItem('users');
-            console.log('Retrieved users from storage:', users); // Debug line
-            return users ? JSON.parse(users) : [];
+        // Debugging function
+        function debugLog(message) {
+            console.log(`[LOGIN DEBUG] ${message}`);
         }
 
-        async function handleLogin(event) {
+        // Enhanced Performance Authentication
+        class AuthManager {
+            static registerUser(email, password) {
+                try {
+                    debugLog('Attempting to register user');
+                    const users = this.getRegisteredUsers();
+                    
+                    // Use Map for faster lookups
+                    const userMap = new Map(users.map(u => [u.email, u]));
+                    
+                    if (userMap.has(email)) {
+                        debugLog('User already exists');
+                        throw new Error('User already exists');
+                    }
+
+                    const newUser = { 
+                        email, 
+                        // Store both original and hashed password for backward compatibility
+                        password: password,
+                        hashedPassword: this.hashPassword(password),
+                        createdAt: Date.now()
+                    };
+
+                    users.push(newUser);
+                    localStorage.setItem('users', JSON.stringify(users));
+                    debugLog('User registered successfully');
+                    return true;
+                } catch (error) {
+                    console.error('Registration error:', error);
+                    return false;
+                }
+            }
+
+            static getRegisteredUsers() {
+                const users = localStorage.getItem('users');
+                debugLog(`Retrieved users: ${users}`);
+                return users ? JSON.parse(users) : [];
+            }
+
+            // Simple password hashing for basic security
+            static hashPassword(password) {
+                let hash = 0;
+                for (let i = 0; i < password.length; i++) {
+                    const char = password.charCodeAt(i);
+                    hash = ((hash << 5) - hash) + char;
+                    hash = hash & hash; // Convert to 32-bit integer
+                }
+                return Math.abs(hash).toString(16);
+            }
+
+            static authenticateUser(email, password) {
+                try {
+                    debugLog('Attempting to authenticate user');
+                    const users = this.getRegisteredUsers();
+                    
+                    // Check for both original and hashed password
+                    const hashedPassword = this.hashPassword(password);
+                    const user = users.find(u => 
+                        u.email === email && 
+                        (u.password === password || u.hashedPassword === hashedPassword)
+                    );
+                    
+                    if (user) {
+                        debugLog('Authentication successful');
+                        // Update to use hashed password for future logins
+                        if (!user.hashedPassword) {
+                            user.hashedPassword = hashedPassword;
+                        }
+                        
+                        // Update last login time
+                        user.lastLogin = Date.now();
+                        localStorage.setItem('users', JSON.stringify(users));
+                        return true;
+                    }
+                    
+                    debugLog('Authentication failed');
+                    return false;
+                } catch (error) {
+                    console.error('Authentication error:', error);
+                    return false;
+                }
+            }
+
+            // Optional: Clean up old user records
+            static cleanupUsers(maxAge = 365 * 24 * 60 * 60 * 1000) { // 1 year
+                const users = this.getRegisteredUsers();
+                const currentTime = Date.now();
+                const filteredUsers = users.filter(user => 
+                    !user.createdAt || (currentTime - user.createdAt) <= maxAge
+                );
+                
+                if (filteredUsers.length !== users.length) {
+                    localStorage.setItem('users', JSON.stringify(filteredUsers));
+                }
+            }
+        }
+
+        function handleLogin(event) {
             event.preventDefault();
-            
-            const email = document.getElementById('email').value;
+            debugLog('Login attempt started');
+
+            const startTime = performance.now(); // Performance tracking
+
+            const email = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
 
-            // Simple validation
-            if (!email || !email.includes('@')) {
+            // Comprehensive validation
+            if (!email || !password) {
+                showError('Please enter both email and password');
+                return;
+            }
+
+            // Email format validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
                 showError('Please enter a valid email address');
                 return;
             }
 
-            if (!password) {
-                showError('Please enter your password');
+            // Password strength check
+            if (password.length < 6) {
+                showError('Password must be at least 6 characters long');
                 return;
             }
 
-            try {
-                // Get registered users
-                const users = getRegisteredUsers();
-                console.log('Checking login for email:', email); // Debug line
-                
-                // Find matching user
-                const user = users.find(u => u.email === email && u.password === password);
-                
-                if (user) {
-                    console.log('Login successful for user:', user.email); // Debug line
-                    
-                    // Store user data
-                    localStorage.setItem('currentUser', JSON.stringify({
-                        name: user.name,
-                        email: user.email
-                    }));
-                    localStorage.setItem('isLoggedIn', 'true');
+            // Authenticate user
+            if (AuthManager.authenticateUser(email, password)) {
+                // Store user session
+                const token = btoa(email + ':' + Date.now());
+                localStorage.setItem('token', token);
+                localStorage.setItem('userEmail', email);
 
-                    // Show success and redirect
-                    showSuccess('Login successful! Redirecting to dashboard...');
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1500);
-                } else {
-                    console.log('Login failed: No matching user found'); // Debug line
-                    showError('Invalid email or password');
-                }
-            } catch (error) {
-                console.error('Login error:', error);
-                showError('An error occurred during login');
+                // Performance logging
+                const endTime = performance.now();
+                debugLog(`Login process took ${endTime - startTime} milliseconds`);
+
+                showSuccess('Login Successful! Redirecting...');
+                
+                // Prevent multiple redirects
+                const redirectTimeout = setTimeout(() => {
+                    debugLog('Redirecting to dashboard');
+                    window.location.href = 'dashboard.html';
+                }, 1500);
+
+                // Cleanup old user records periodically
+                AuthManager.cleanupUsers();
+
+                // Cleanup to prevent memory leaks
+                window.addEventListener('beforeunload', () => {
+                    clearTimeout(redirectTimeout);
+                });
+            } else {
+                showError('Invalid email or password');
             }
         }
 
-        function handleGoogleLogin() {
-            alert('Google login coming soon!');
-        }
-
-        function handleAppleLogin() {
-            alert('Apple login coming soon!');
-        }
-
         function showError(message) {
+            debugLog(`Error: ${message}`);
             const errorDiv = document.getElementById('error-message');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
+            errorDiv.style.color = 'red';
             setTimeout(() => {
                 errorDiv.style.display = 'none';
             }, 3000);
         }
 
         function showSuccess(message) {
+            debugLog(`Success: ${message}`);
             const successDiv = document.getElementById('success-message');
             successDiv.textContent = message;
             successDiv.style.display = 'block';
+            successDiv.style.color = 'green';
+            setTimeout(() => {
+                successDiv.style.display = 'none';
+            }, 3000);
         }
 
-        // Check if already logged in
-        const token = localStorage.getItem('token');
-        if (token) {
-            window.location.href = 'dashboard.html';
+        // Prevent infinite loading
+        function preventInfiniteLoading() {
+            debugLog('Checking for infinite loading prevention');
+            const token = localStorage.getItem('token');
+            const loadAttempts = parseInt(localStorage.getItem('loadAttempts') || '0');
+
+            // If token exists but load attempts exceed 3, clear token
+            if (token && loadAttempts >= 3) {
+                debugLog('Exceeded load attempts. Clearing token.');
+                localStorage.removeItem('token');
+                localStorage.removeItem('userEmail');
+                localStorage.removeItem('loadAttempts');
+                return;
+            }
+
+            // Increment load attempts
+            localStorage.setItem('loadAttempts', (loadAttempts + 1).toString());
+
+            // If token exists, redirect to dashboard
+            if (token) {
+                debugLog('Token exists. Redirecting to dashboard.');
+                window.location.href = 'dashboard.html';
+            }
         }
+
+        // Initialize on DOM content loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            debugLog('DOM content loaded');
+            preventInfiniteLoading();
+        });
     </script>
 </body>
 </html>

@@ -8,16 +8,9 @@
     --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Global Animations */
 @keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fadeIn {
@@ -25,11 +18,9 @@
     to { opacity: 1; }
 }
 
-/* Base Styles */
 body {
     margin: 0;
-    padding: 0;
-    padding-top: 64px;
+    padding: 64px 0 0;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
@@ -38,7 +29,6 @@ body {
     flex-direction: column;
 }
 
-/* Header Styles */
 header {
     background: var(--background-color);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -152,7 +142,6 @@ nav {
     color: var(--primary-color);
 }
 
-/* Main Content Styles */
 main {
     margin-top: 80px;
 }
@@ -188,7 +177,6 @@ main {
     background-color: rgb(165, 48, 30);
 }
 
-/* Services Section */
 .services {
     padding: 4rem 1rem;
     background-color: var(--background-color);
@@ -221,7 +209,6 @@ main {
     transform: translateY(-5px);
 }
 
-/* About Section */
 .about {
     padding: 4rem 1rem;
     background-color: var(--primary-light);
@@ -233,34 +220,160 @@ main {
     margin-bottom: 1rem;
 }
 
-/* Footer Styles */
 footer {
-    background-color: var(--text-color);
-    color: white;
-    padding: 2rem 1rem;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 4rem 2rem;
 }
 
 .footer-content {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 2rem;
     max-width: 1200px;
     margin: 0 auto;
+}
+
+.footer-company-info {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
 }
 
 .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    margin-bottom: 1rem;
+    transition: all 0.4s ease-out;
+}
+
+.footer-logo:hover {
+    color: var(--primary-color);
+    transform: translateX(10px);
+}
+
+.footer-logo i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.footer-company-info p {
+    color: #ffffff;
+    opacity: 0.8;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.footer-social-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.footer-social-links a {
+    color: #ffffff;
+    opacity: 0.8;
     font-size: 1.5rem;
-    font-weight: bold;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.4s ease-out;
+}
+
+.footer-social-links a:hover {
+    color: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.footer-section h3 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.7rem;
+}
+
+.footer-links a {
+    color: #ffffff;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: all 0.4s ease-out;
+    display: inline-block;
+}
+
+.footer-links a:hover {
+    color: var(--primary-color);
+    opacity: 1;
+    transform: translateX(10px);
 }
 
 .footer-bottom {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    opacity: 0.8;
+    margin-top: 4rem;
+    padding: 2rem;
     text-align: center;
-    margin-top: 2rem;
-    padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.95rem;
 }
 
-/* Responsive Design */
+@media (max-width: 1024px) {
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 3rem;
+    }
+
+    .footer-company-info {
+        grid-column: 1 / -1;
+        text-align: center;
+    }
+
+    .footer-logo {
+        justify-content: center;
+    }
+
+    .footer-social-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        text-align: center;
+    }
+
+    .footer-section {
+        margin-top: 1rem;
+    }
+
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
 @media screen and (max-width: 768px) {
     header {
         height: 60px;

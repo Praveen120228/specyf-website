@@ -4,11 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Specyf</title>
+    
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/about.css">
+    
+    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Primary Meta Tags -->
+    
+    <!-- SEO Meta Tags -->
     <meta name="title" content="About Specyf - Our Story and Mission">
     <meta name="description" content="Learn about Specyf's journey, our mission to transform businesses, and the team behind our innovative solutions.">
     <meta name="keywords" content="about Specyf, business solutions, company history, mission statement, team, values">
@@ -16,19 +23,12 @@
     <meta name="robots" content="index, follow">
     <meta name="language" content="English">
     
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://praveen120228.github.io/specyf-website/about.html">
     <meta property="og:title" content="About Specyf - Our Story and Mission">
     <meta property="og:description" content="Learn about Specyf's journey, our mission to transform businesses, and the team behind our innovative solutions.">
     <meta property="og:image" content="assets/logo.png">
-    
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://praveen120228.github.io/specyf-website/about.html">
-    <meta property="twitter:title" content="About Specyf - Our Story and Mission">
-    <meta property="twitter:description" content="Learn about Specyf's journey, our mission to transform businesses, and the team behind our innovative solutions.">
-    <meta property="twitter:image" content="assets/logo.png">
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="assets/favicon.png">
@@ -36,6 +36,183 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://praveen120228.github.io/specyf-website/about.html">
+    <style>
+        /* Header Styles */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            transition: all 0.4s ease;
+            height: 80px;
+            padding: 0 20px;
+        }
+
+        header.scrolled {
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo:hover {
+            color: #007bff;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .nav-links a.active {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+            color: #333;
+            transition: all 0.4s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            color: #007bff;
+        }
+
+        main {
+            margin-top: 80px;
+        }
+
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s ease-out;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateX(3px);
+        }
+
+        .footer-links a[href^="tel:"],
+        .footer-links a[href^="mailto:"] {
+            transition: all 0.2s ease-out;
+        }
+
+        .footer-links a[href^="tel:"]:hover,
+        .footer-links a[href^="mailto:"]:hover {
+            color: var(--primary-color);
+            transform: translateX(3px);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 0.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Specific gap adjustment for services and contact sections */
+        .footer-section:nth-child(3) {
+            margin-right: -3mm;
+        }
+
+        footer {
+            background-color: #1a1a1a;
+            padding: 4rem 2rem;
+            color: #ffffff;
+        }
+
+        .footer-links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.2s ease-out;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateX(3px);
+            opacity: 1;
+        }
+
+        .footer-section h3 {
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .footer-logo {
+            color: #ffffff;
+        }
+
+        .footer-bottom {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .footer-links li {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .footer-social-links a {
+            color: #ffffff;
+            opacity: 0.8;
+        }
+
+        .footer-social-links a:hover {
+            color: var(--primary-color);
+            opacity: 1;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -52,10 +229,21 @@
                 <a href="about.html" class="active">About</a>
                 <a href="services.html">Services</a>
                 <a href="contact.html">Contact</a>
-                <a href="login.html" class="login-btn">Login</a>
+                <a href="login.html">Login</a>
             </div>
         </nav>
     </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
 
     <main>
         <section class="hero-section">
@@ -171,17 +359,17 @@
                 </a>
                 <p>Transforming businesses through innovative digital solutions.</p>
                 <div class="footer-social-links">
-                    <a href="#" target="_blank" aria-label="LinkedIn">
-                        <i class="fab fa-linkedin"></i>
+                    <a href="https://www.linkedin.com/company/specyf/" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-brands fa-linkedin"></i>
                     </a>
                     <a href="https://x.com/@specyf40407" target="_blank" aria-label="X">
-                        <i class="fab fa-x-twitter"></i>
+                        <i class="fab fa-brands fa-x-twitter"></i>
                     </a>
-                    <a href="#" target="_blank" aria-label="Facebook">
-                        <i class="fab fa-facebook"></i>
+                    <a href="https://www.facebook.com/Specyf-109142508287651" target="_blank" aria-label="Facebook">
+                        <i class="fab fa-brands fa-facebook"></i>
                     </a>
                     <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram">
-                        <i class="fab fa-instagram"></i>
+                        <i class="fab fa-brands fa-instagram"></i>
                     </a>
                 </div>
             </div>
@@ -206,8 +394,8 @@
             <div class="footer-section">
                 <h3>Contact</h3>
                 <ul class="footer-links">
-                    <li><a href="tel:+1234567890">+919494908694</a></li>
-                    <li><a href="mailto:info@specyf.com">spesyf.contact@gmail.com</a></li>
+                    <li><a href="tel:+919494908694">+919494908694</a></li>
+                    <li><a href="mailto:spesyf.contact@gmail.com">spesyf.contact@gmail.com</a></li>
                     <li>Kambalapeta-2</li>
                     <li>Rajahmundry, 533101</li>
                 </ul>
@@ -217,17 +405,5 @@
             <p>&copy; 2024 Specyf. All rights reserved.</p>
         </div>
     </footer>
-
-    <script>
-        // Mobile menu toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-            const navLinks = document.querySelector('.nav-links');
-
-            mobileMenuToggle.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-            });
-        });
-    </script>
 </body>
 </html>
