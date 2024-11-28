@@ -384,19 +384,121 @@
             font-size: 0.8rem;
         }
 
-        @media (max-width: 768px) {
-            .footer-content {
-                grid-template-columns: 1fr;
+        /* Mobile Menu Styles */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 1rem;
+        }
+
+        @media screen and (max-width: 768px) {
+            nav {
+                padding: 0 1rem;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 64px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 64px);
+                background: var(--background-color);
+                flex-direction: column;
+                gap: 1rem;
+                padding: 2rem;
+                transition: left 0.3s ease;
+            }
+
+            .nav-links.active {
+                left: 0;
+            }
+
+            .nav-links a {
+                font-size: 18px;
+                padding: 0.75rem 1.5rem;
+                width: 100%;
                 text-align: center;
             }
 
-            .footer-company-info {
-                flex-direction: column;
-                align-items: center;
+            .social-icons {
+                display: none;
             }
 
-            .social-links {
-                align-items: center;
+            .logo {
+                font-size: 20px;
+            }
+
+            .hero {
+                padding: 60px 1rem;
+                text-align: center;
+            }
+
+            .hero-content {
+                padding: 0;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+                margin-bottom: 1rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1rem;
+                margin-bottom: 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .cta-primary, .cta-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .services-section {
+                padding: 3rem 1rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .service-card {
+                padding: 1.5rem;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .footer-company-info, .footer-links, .footer-social {
+                width: 100%;
+                text-align: center;
+            }
+
+            .footer-links ul {
+                justify-content: center;
+            }
+
+            .footer-social-icons {
+                justify-content: center;
             }
         }
 
@@ -438,6 +540,9 @@
 <body>
     <header>
         <nav>
+            <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu">
+                <i class="fas fa-bars"></i>
+            </button>
             <div class="logo">Specyf</div>
             <div class="nav-links">
                 <a href="index.html">Home</a>
@@ -591,6 +696,14 @@
         }
 
         setInterval(slideServices, 3000);
+
+        // Mobile menu toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
     </script>
 </body>
 </html>

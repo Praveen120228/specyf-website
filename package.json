@@ -18,8 +18,10 @@
     "mongoose": "^7.4.3",
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.4",
+    "razorpay": "^2.9.5",
     "sequelize": "^6.35.2",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "stripe": "^17.4.0"
   },
   "devDependencies": {
     "http-server": "^14.1.1",

@@ -9,6 +9,7 @@ const port = process.env.PORT || 3001;
 // Import routes and database
 const authRoutes = require('./routes/auth.routes');
 const adminRoutes = require('./routes/admin.routes');
+const paymentRoutes = require('./routes/payment.routes');
 const { initDatabase } = require('./models/user.model');
 
 // Middleware
@@ -22,6 +23,7 @@ app.use(cors({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname)));
+app.use(express.static('public'));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Initialize database
@@ -35,6 +37,7 @@ initDatabase()
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api', paymentRoutes);
 app.use('/api/upload', require('./routes/upload'));
 
 // Basic route for testing
