@@ -1,22 +1,18 @@
 // API endpoints
-const API_URL = 'http://localhost:3001/api';
-const AUTH_ENDPOINTS = {
-    register: `${API_URL}/auth/register`,
-    login: `${API_URL}/auth/login`,
-    me: `${API_URL}/auth/me`,
-    google: `${API_URL}/auth/google`,
-    apple: `${API_URL}/auth/apple`
-};
+const API_URL = 'https://your-backend-url.com/api';
 
 // Social Login Configuration
-const GOOGLE_CLIENT_ID = 'YOUR_GOOGLE_CLIENT_ID';
-const APPLE_CLIENT_ID = 'YOUR_APPLE_CLIENT_ID';
-const REDIRECT_URI = 'https://your-website.com/callback';
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const APPLE_CLIENT_ID = process.env.APPLE_CLIENT_ID;
+const REDIRECT_URI = window.location.origin + '/auth/callback';
 
-// Form validation functions
+// Enhanced form validation functions
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
+    return {
+        isValid: re.test(email),
+        message: re.test(email) ? '' : 'Please enter a valid email address'
+    };
 }
 
 function validatePassword(password) {
@@ -24,8 +20,22 @@ function validatePassword(password) {
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumbers = /\d/.test(password);
+    const hasSpecialChar = /[!@#$%^&*]/.test(password);
 
-    return password.length >= minLength && hasUpperCase && hasLowerCase && hasNumbers;
+    const isValid = password.length >= minLength && hasUpperCase && hasLowerCase && 
+                   hasNumbers && hasSpecialChar;
+
+    let message = '';
+    if (!isValid) {
+        message = 'Password must be at least 8 characters long and contain: ';
+        if (!hasUpperCase) message += 'uppercase letter, ';
+        if (!hasLowerCase) message += 'lowercase letter, ';
+        if (!hasNumbers) message += 'number, ';
+        if (!hasSpecialChar) message += 'special character, ';
+        message = message.slice(0, -2);
+    }
+
+    return { isValid, message };
 }
 
 function validateName(name) {
@@ -33,17 +43,6 @@ function validateName(name) {
 }
 
 // UI helper functions
-function showError(message, elementId = 'error-message') {
-    const errorDiv = document.getElementById(elementId);
-    if (errorDiv) {
-        errorDiv.textContent = message;
-        errorDiv.style.display = 'block';
-        setTimeout(() => {
-            errorDiv.style.display = 'none';
-        }, 5000);
-    }
-}
-
 function showSuccess(message, elementId = 'success-message') {
     const successDiv = document.getElementById(elementId);
     if (successDiv) {
@@ -65,46 +64,45 @@ function setLoading(isLoading) {
     }
 }
 
-// Authentication functions
-async function handleRegister(event) {
+// Enhanced authentication functions
+async function register(event) {
     event.preventDefault();
-    
-    const name = document.getElementById('name').value;
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Client-side validation
-    if (!validateName(name)) {
-        showError('Name must be at least 2 characters long and contain only letters and spaces', 'name-error');
+    const form = event.target;
+    const formData = new FormData(form);
+
+    // Validate form data
+    const emailValidation = validateEmail(formData.get('email'));
+    const passwordValidation = validatePassword(formData.get('password'));
+    const nameValidation = validateName(formData.get('name'));
+
+    if (!emailValidation.isValid) {
+        showError(emailValidation.message);
         return;
     }
-    
-    if (!validateEmail(email)) {
-        showError('Please enter a valid email address', 'email-error');
+
+    if (!passwordValidation.isValid) {
+        showError(passwordValidation.message);
         return;
     }
-    
-    if (!validatePassword(password)) {
-        showError('Password must be at least 8 characters long and contain uppercase, lowercase, and numbers', 'password-error');
+
+    if (!nameValidation) {
+        showError('Please enter a valid name');
         return;
     }
-    
-    if (password !== confirmPassword) {
-        showError('Passwords do not match', 'confirmPassword-error');
-        return;
-    }
-    
+
     setLoading(true);
-    
+
     try {
-        const response = await fetch(AUTH_ENDPOINTS.register, {
+        const response = await fetch(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ name, email, password })
+            body: JSON.stringify({
+                name: formData.get('name'),
+                email: formData.get('email'),
+                password: formData.get('password')
+            })
         });
 
         const data = await response.json();
@@ -113,74 +111,63 @@ async function handleRegister(event) {
             throw new Error(data.message || 'Registration failed');
         }
 
-        // Store auth token
         localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+        showSuccess('Registration successful! Verification email sent.');
         
-        showSuccess('Registration successful! Redirecting...');
-        
-        // Redirect to dashboard
-        setTimeout(() => {
-            window.location.href = '/dashboard.html';
-        }, 1500);
+        // Redirect to email verification page
+        window.location.href = '/verify-email.html';
     } catch (error) {
-        showError(error.message || 'An error occurred during registration');
-        console.error('Registration error:', error);
+        showError(error.message);
     } finally {
         setLoading(false);
     }
 }
 
-async function handleLogin(event) {
+async function login(event) {
     event.preventDefault();
     
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
     
-    // Client-side validation
-    if (!validateEmail(email)) {
-        showError('Please enter a valid email address', 'email-error');
-        return;
-    }
-    
-    if (!password) {
-        showError('Please enter your password', 'password-error');
-        return;
-    }
-    
-    setLoading(true);
-    
     try {
-        const response = await fetch(AUTH_ENDPOINTS.login, {
+        const response = await fetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify({ email, password }),
+            credentials: 'include'
         });
-
+        
         const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || 'Login failed');
-        }
-
-        // Store auth token
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
         
-        showSuccess('Login successful! Redirecting...');
-        
-        // Redirect to dashboard
-        setTimeout(() => {
+        if (data.success) {
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('userId', data.user.id);
+            localStorage.setItem('userName', data.user.name);
             window.location.href = '/dashboard.html';
-        }, 1500);
+        } else {
+            showError(data.message || 'Login failed');
+        }
     } catch (error) {
-        showError(error.message || 'An error occurred during login');
         console.error('Login error:', error);
-    } finally {
-        setLoading(false);
+        showError('Login failed. Please try again.');
+    }
+}
+
+async function logout() {
+    try {
+        await fetch(`${API_URL}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+        
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        localStorage.removeItem('userName');
+        window.location.href = '/login.html';
+    } catch (error) {
+        console.error('Logout error:', error);
     }
 }
 
@@ -188,34 +175,143 @@ async function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = '/login.html';
-        return false;
+        return;
     }
-
+    
     try {
-        const response = await fetch(AUTH_ENDPOINTS.me, {
+        const response = await fetch(`${API_URL}/auth/me`, {
             headers: {
                 'Authorization': `Bearer ${token}`
-            }
+            },
+            credentials: 'include'
         });
-
-        if (!response.ok) {
-            throw new Error('Invalid token');
+        
+        const data = await response.json();
+        
+        if (!data.success) {
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userName');
+            window.location.href = '/login.html';
         }
-
-        return true;
     } catch (error) {
         console.error('Auth check error:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
         window.location.href = '/login.html';
-        return false;
     }
 }
 
-function logout() {
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    window.location.href = '/login.html';
+function showError(message) {
+    const errorElement = document.getElementById('error-message');
+    if (errorElement) {
+        errorElement.textContent = message;
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+            errorElement.style.display = 'none';
+        }, 5000);
+    }
+}
+
+// Enhanced Google Sign-In
+async function handleGoogleSignIn(response) {
+    try {
+        const token = response.credential;
+        
+        const apiResponse = await fetch(`${API_URL}/auth/google`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ token })
+        });
+
+        const data = await apiResponse.json();
+
+        if (!apiResponse.ok) {
+            throw new Error(data.message || 'Google sign-in failed');
+        }
+
+        localStorage.setItem('token', data.token);
+        showSuccess('Successfully signed in with Google');
+        window.location.href = '/dashboard.html';
+    } catch (error) {
+        showError(error.message);
+    }
+}
+
+// Enhanced Apple Sign-In
+async function handleAppleSignIn(event) {
+    try {
+        const { authorization } = event.detail;
+        
+        const response = await fetch(`${API_URL}/auth/apple`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                code: authorization.code,
+                id_token: authorization.id_token
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Apple sign-in failed');
+        }
+
+        localStorage.setItem('token', data.token);
+        showSuccess('Successfully signed in with Apple');
+        window.location.href = '/dashboard.html';
+    } catch (error) {
+        showError(error.message);
+    }
+}
+
+// Password reset functionality
+async function requestPasswordReset(email) {
+    try {
+        const response = await fetch(`${API_URL}/auth/reset-password`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to send reset email');
+        }
+
+        showSuccess('Password reset email sent. Please check your inbox.');
+    } catch (error) {
+        showError(error.message);
+    }
+}
+
+async function resetPassword(token, newPassword) {
+    try {
+        const response = await fetch(`${API_URL}/auth/reset-password/${token}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ password: newPassword })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || 'Failed to reset password');
+        }
+
+        showSuccess('Password successfully reset. Please login with your new password.');
+        window.location.href = '/login.html';
+    } catch (error) {
+        showError(error.message);
+    }
 }
 
 // Initialize Google Sign-In
@@ -230,46 +326,6 @@ function initGoogleSignIn() {
     );
 }
 
-// Handle Google Sign-In Response
-async function handleGoogleSignIn(response) {
-    try {
-        const credential = response.credential;
-        const decodedToken = JSON.parse(atob(credential.split('.')[1]));
-        
-        const userData = {
-            name: decodedToken.name,
-            email: decodedToken.email,
-            picture: decodedToken.picture,
-            provider: 'google'
-        };
-
-        // You can send this data to your backend here
-        const apiResponse = await fetch(`${API_URL}/auth/google`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
-
-        if (!apiResponse.ok) {
-            throw new Error('Google authentication failed');
-        }
-
-        const data = await apiResponse.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(userData));
-        
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1500);
-    } catch (error) {
-        console.error('Google Sign-In error:', error);
-        showError('Google Sign-In failed. Please try again.');
-    }
-}
-
 // Initialize Apple Sign-In
 function initAppleSignIn() {
     AppleID.auth.init({
@@ -281,50 +337,6 @@ function initAppleSignIn() {
     });
 }
 
-// Handle Apple Sign-In Success
-async function handleAppleSignIn(event) {
-    try {
-        const { authorization } = event.detail;
-        
-        const userData = {
-            email: authorization.email,
-            name: authorization.name && `${authorization.name.firstName} ${authorization.name.lastName}`,
-            provider: 'apple'
-        };
-
-        // You can send this data to your backend here
-        const apiResponse = await fetch(`${API_URL}/auth/apple`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(userData)
-        });
-
-        if (!apiResponse.ok) {
-            throw new Error('Apple authentication failed');
-        }
-
-        const data = await apiResponse.json();
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(userData));
-        
-        showSuccess('Login successful! Redirecting...');
-        setTimeout(() => {
-            window.location.href = 'dashboard.html';
-        }, 1500);
-    } catch (error) {
-        console.error('Apple Sign-In error:', error);
-        showError('Apple Sign-In failed. Please try again.');
-    }
-}
-
-// Apple Sign-In Error Handler
-function handleAppleSignInError(event) {
-    console.error('Apple Sign-In failed:', event.detail.error);
-    showError('Apple Sign-In failed. Please try again.');
-}
-
 // Initialize auth listeners
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('loginForm');
@@ -332,11 +344,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
 
     if (loginForm) {
-        loginForm.addEventListener('submit', handleLogin);
+        loginForm.addEventListener('submit', login);
     }
 
     if (registerForm) {
-        registerForm.addEventListener('submit', handleRegister);
+        registerForm.addEventListener('submit', register);
     }
 
     if (logoutBtn) {
@@ -357,10 +369,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Check auth on protected pages
-    if (window.location.pathname !== '/login.html' && 
-        window.location.pathname !== '/register.html' && 
-        window.location.pathname !== '/signup.html' && 
-        window.location.pathname !== '/') {
+    if (window.location.pathname.includes('dashboard.html')) {
         checkAuth();
     }
 });
+
+// Apple Sign-In Error Handler
+function handleAppleSignInError(event) {
+    console.error('Apple Sign-In failed:', event.detail.error);
+    showError('Apple Sign-In failed. Please try again.');
+}

@@ -1,61 +1,84 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: [true, 'Please provide a name'],
-        trim: true
+        required: true,
+        trim: true,
+        minlength: 2,
+        maxlength: 50
     },
     email: {
         type: String,
-        required: [true, 'Please provide an email'],
+        required: true,
         unique: true,
-        match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            'Please provide a valid email'
-        ]
+        trim: true,
+        lowercase: true,
+        match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
     },
     password: {
         type: String,
-        required: [true, 'Please provide a password'],
+        required: true,
         minlength: 6,
         select: false
     },
     avatar: {
         type: String,
-        default: 'default-avatar.png'
+        default: '/images/default-avatar.png'
     },
     bio: {
         type: String,
-        maxlength: [250, 'Bio cannot be more than 250 characters']
+        maxlength: 200
     },
-    followers: [{
-        type: mongoose.Schema.ObjectId,
-        ref: 'User'
-    }],
     following: [{
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }]
+}, {
+    timestamps: true
 });
 
 // Hash password before saving
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
-        next();
+        return next();
     }
+    
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
+    next();
 });
 
 // Match password
 userSchema.methods.matchPassword = async function(enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
 };
+
+// Generate JWT token
+userSchema.methods.generateToken = function() {
+    return jwt.sign(
+        { id: this._id },
+        process.env.JWT_SECRET,
+        { expiresIn: process.env.JWT_EXPIRE }
+    );
+};
+
+// Set virtuals to true when converting to JSON
+userSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        delete ret.password;
+        return ret;
+    }
+});
 
 module.exports = mongoose.model('User', userSchema);

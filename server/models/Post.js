@@ -2,55 +2,61 @@ const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
     user: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
     },
     content: {
         type: String,
-        required: [true, 'Please provide post content'],
-        maxlength: [500, 'Post cannot be more than 500 characters']
+        required: true,
+        trim: true
     },
     image: {
         type: String
     },
     likes: [{
-        type: mongoose.Schema.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }],
     comments: [{
         user: {
-            type: mongoose.Schema.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
         },
         content: {
             type: String,
-            required: [true, 'Please provide a comment'],
-            maxlength: [200, 'Comment cannot be more than 200 characters']
+            required: true,
+            trim: true
         },
         createdAt: {
             type: Date,
             default: Date.now
         }
-    }],
-    createdAt: {
-        type: Date,
-        default: Date.now
-    }
+    }]
 }, {
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    timestamps: true
 });
 
-// Add virtual field for like count
+// Virtual for like count
 postSchema.virtual('likeCount').get(function() {
     return this.likes.length;
 });
 
-// Add virtual field for comment count
+// Virtual for comment count
 postSchema.virtual('commentCount').get(function() {
     return this.comments.length;
+});
+
+// Set virtuals to true when converting to JSON
+postSchema.set('toJSON', {
+    virtuals: true,
+    transform: function(doc, ret) {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+    }
 });
 
 module.exports = mongoose.model('Post', postSchema);
