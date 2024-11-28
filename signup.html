@@ -332,6 +332,16 @@
             const confirmPassword = document.getElementById('confirm-password').value;
 
             // Basic validation
+            if (!name || name.trim().length === 0) {
+                showError('Please enter your name');
+                return;
+            }
+
+            if (!email || !email.includes('@')) {
+                showError('Please enter a valid email address');
+                return;
+            }
+
             if (password !== confirmPassword) {
                 showError('Passwords do not match');
                 return;
@@ -342,32 +352,42 @@
                 return;
             }
 
-            // Get existing users or initialize empty array
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            try {
+                // Get existing users or initialize empty array
+                const users = JSON.parse(localStorage.getItem('users') || '[]');
+                console.log('Current users:', users); // Debug line
 
-            // Check if email already exists
-            if (users.some(user => user.email === email)) {
-                showError('Email already registered');
-                return;
+                // Check if email already exists
+                if (users.some(user => user.email === email)) {
+                    showError('Email already registered');
+                    return;
+                }
+
+                // Add new user
+                const newUser = {
+                    name,
+                    email,
+                    password,
+                    createdAt: new Date().toISOString()
+                };
+                users.push(newUser);
+                console.log('Adding new user:', newUser); // Debug line
+
+                // Save updated users array
+                localStorage.setItem('users', JSON.stringify(users));
+                console.log('Updated users list:', users); // Debug line
+
+                // Show success message
+                showSuccess('Account created successfully! Redirecting to login...');
+
+                // Redirect to login page after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 2000);
+            } catch (error) {
+                console.error('Signup error:', error);
+                showError('An error occurred during signup');
             }
-
-            // Add new user
-            users.push({
-                name,
-                email,
-                password // Note: In a real app, password should be hashed
-            });
-
-            // Save updated users array
-            localStorage.setItem('users', JSON.stringify(users));
-
-            // Show success message
-            showSuccess('Account created successfully! Redirecting to login...');
-
-            // Redirect to login page after 2 seconds
-            setTimeout(() => {
-                window.location.href = 'login.html';
-            }, 2000);
         }
 
         function handleGoogleSignup() {

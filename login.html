@@ -317,7 +317,8 @@
     <script>
         // Get registered users
         function getRegisteredUsers() {
-            const users = localStorage.getItem('registeredUsers');
+            const users = localStorage.getItem('users');
+            console.log('Retrieved users from storage:', users); // Debug line
             return users ? JSON.parse(users) : [];
         }
 
@@ -338,27 +339,36 @@
                 return;
             }
 
-            // Check credentials against registered users
-            const users = getRegisteredUsers();
-            const user = users.find(u => u.email === email && u.password === password);
+            try {
+                // Get registered users
+                const users = getRegisteredUsers();
+                console.log('Checking login for email:', email); // Debug line
+                
+                // Find matching user
+                const user = users.find(u => u.email === email && u.password === password);
+                
+                if (user) {
+                    console.log('Login successful for user:', user.email); // Debug line
+                    
+                    // Store user data
+                    localStorage.setItem('currentUser', JSON.stringify({
+                        name: user.name,
+                        email: user.email
+                    }));
+                    localStorage.setItem('isLoggedIn', 'true');
 
-            if (user) {
-                // Store user data
-                localStorage.setItem('user', JSON.stringify({
-                    name: user.name,
-                    email: user.email,
-                    isVerified: user.isVerified,
-                    createdAt: user.createdAt
-                }));
-                localStorage.setItem('token', 'mock-token');
-
-                // Show success and redirect
-                showSuccess('Login successful! Redirecting to dashboard...');
-                setTimeout(() => {
-                    window.location.href = 'dashboard.html';
-                }, 1500);
-            } else {
-                showError('Invalid email or password');
+                    // Show success and redirect
+                    showSuccess('Login successful! Redirecting to dashboard...');
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1500);
+                } else {
+                    console.log('Login failed: No matching user found'); // Debug line
+                    showError('Invalid email or password');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('An error occurred during login');
             }
         }
 
@@ -372,18 +382,17 @@
 
         function showError(message) {
             const errorDiv = document.getElementById('error-message');
-            const successDiv = document.getElementById('success-message');
             errorDiv.textContent = message;
             errorDiv.style.display = 'block';
-            successDiv.style.display = 'none';
+            setTimeout(() => {
+                errorDiv.style.display = 'none';
+            }, 3000);
         }
 
         function showSuccess(message) {
-            const errorDiv = document.getElementById('error-message');
             const successDiv = document.getElementById('success-message');
             successDiv.textContent = message;
             successDiv.style.display = 'block';
-            errorDiv.style.display = 'none';
         }
 
         // Check if already logged in
