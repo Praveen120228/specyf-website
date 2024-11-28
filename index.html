@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Primary Meta Tags -->
     <title>Specyf - Professional Business Solutions</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Primary Meta Tags -->
     <meta name="title" content="Specyf - Professional Business Solutions">
     <meta name="description" content="Transform your business with Specyf's professional solutions. We offer expert consulting, digital transformation, and innovative business strategies.">
     <meta name="keywords" content="business solutions, professional services, digital transformation, consulting, business strategy, Specyf">
@@ -33,10 +35,6 @@
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://praveen120228.github.io/specyf-website/">
-    
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary-color: rgb(185, 54, 34);
@@ -56,45 +54,54 @@
             padding: 0;
         }
 
-        /* Header Styles */
+        /* Optimized Header Styles */
         header {
-            background: var(--white);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
             position: fixed;
-            width: 100%;
             top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             z-index: 1000;
+            transition: all 0.3s ease;
             height: 70px;
-            padding: 0 20px;
+        }
+
+        header.scrolled {
+            height: 60px;
+            background: rgba(255, 255, 255, 0.95);
         }
 
         nav {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 0 20px;
+            height: 100%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            height: 100%;
         }
 
         .logo {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
-            color: var(--primary-color);
+            color: #333;
             text-decoration: none;
-            flex: 1;
-            min-width: 120px;
-            padding: 10px 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo:hover {
+            color: #007bff;
         }
 
         .nav-links {
             display: flex;
-            gap: 2px;
+            gap: 30px;
             align-items: center;
-            justify-content: center;
-            flex: 2;
-            padding: 0;
         }
 
         .nav-links a {
@@ -102,35 +109,31 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 8px;
             transition: all 0.3s ease;
-            padding: 4px 8px;
-            border-radius: 4px;
-            white-space: nowrap;
         }
 
         .nav-links a:hover {
-            color: var(--primary-color);
-            background: var(--primary-light);
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
         }
 
-        .social-icons {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex: 1;
-            justify-content: flex-end;
-            min-width: 100px;
+        .nav-links a.active {
+            color: #007bff;
+            background: rgba(0, 123, 255, 0.1);
         }
 
-        .social-icons a {
+        .mobile-menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
             color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 18px;
+            transition: all 0.3s ease;
         }
 
-        .social-icons a:hover {
-            color: var(--primary-color);
+        .mobile-menu-toggle:hover {
+            color: #007bff;
         }
 
         main {
@@ -287,126 +290,167 @@
             max-width: 350px;
         }
 
+        /* Optimized Footer Styles */
         footer {
-            background: var(--background-color);
-            padding: 4rem 2rem;
-            margin-top: 4rem;
+            background: var(--white);
+            padding: 5rem 0 0;
+            margin-top: 5rem;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.05);
         }
 
         .footer-content {
             max-width: 1200px;
             margin: 0 auto;
+            padding: 0 2rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
         }
 
         .footer-company-info {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            max-width: 400px;
         }
 
         .footer-logo {
-            max-width: 150px;
-            height: auto;
-        }
-
-        .footer-description {
-            color: var(--text-color-light);
-            line-height: 1.6;
-        }
-
-        .footer-links {
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .footer-links h3 {
-            color: var(--text-color);
-            font-size: 1.2rem;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
             margin-bottom: 1rem;
         }
 
-        .footer-links ul {
+        .footer-logo i {
+            font-size: 1.8rem;
+        }
+
+        .footer-description {
+            color: var(--text-color);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social-links a:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-section h3 {
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
             list-style: none;
             padding: 0;
             margin: 0;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
         }
 
         .footer-links a {
-            color: var(--text-color-light);
+            color: var(--text-color);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
         .footer-links a:hover {
             color: var(--primary-color);
+            transform: translateX(5px);
         }
 
-        .footer-social {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+        .footer-links li:nth-last-child(1),
+        .footer-links li:nth-last-child(2) {
+            color: #000000;
         }
 
-        .footer-social h3 {
+        .footer-bottom {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-bottom p {
             color: var(--text-color);
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
 
-        .footer-social-icons {
-            display: flex;
-            gap: 1rem;
+        @media screen and (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
+            }
+
+            .footer-company-info {
+                grid-column: 1 / -1;
+                max-width: none;
+                text-align: center;
+            }
+
+            .footer-logo {
+                justify-content: center;
+            }
+
+            .footer-social-links {
+                justify-content: center;
+            }
         }
 
-        .footer-social-icons a {
-            color: var(--text-color-light);
-            font-size: 1.5rem;
-            transition: color 0.3s ease;
-        }
+        @media screen and (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
 
-        .footer-social-icons a:hover {
-            color: var(--primary-color);
+            .footer-section {
+                margin-top: 1rem;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
         }
 
         @media screen and (max-width: 768px) {
             header {
                 height: 60px;
-                padding: 0;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
+            }
+
+            .mobile-menu-toggle {
+                display: block;
             }
 
             nav {
                 padding: 0 15px;
-                display: grid;
-                grid-template-columns: auto 1fr auto;
-                align-items: center;
-                gap: 15px;
-                height: 100%;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                order: 1;
-                margin-right: 5px;
-            }
-
-            .logo {
-                font-size: 24px;
-                order: 2;
-                text-align: center;
-                justify-self: center;
-                margin: 0;
-                padding: 0;
             }
 
             .nav-links {
@@ -418,11 +462,10 @@
                 background: rgba(255, 255, 255, 0.98);
                 backdrop-filter: blur(10px);
                 flex-direction: column;
-                gap: 0;
                 padding: 20px;
+                gap: 10px;
                 transition: all 0.3s ease-in-out;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                order: 3;
+                z-index: 1000;
             }
 
             .nav-links.active {
@@ -430,33 +473,15 @@
             }
 
             .nav-links a {
-                font-size: 18px;
-                padding: 15px 20px;
                 width: 100%;
+                padding: 15px;
                 text-align: left;
-                border-radius: 8px;
-                margin: 5px 0;
-                transition: all 0.2s ease;
-            }
-
-            .nav-links a:hover {
-                background: var(--primary-light);
-                transform: translateX(5px);
-            }
-
-            .social-icons {
-                display: none;
-            }
-
-            /* Mobile Footer Styles */
-            footer {
-                padding: 2rem 1rem;
-                margin-top: 2rem;
+                font-size: 16px;
             }
 
             .footer-content {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 30px;
                 text-align: center;
             }
 
@@ -464,36 +489,12 @@
                 align-items: center;
             }
 
-            .footer-logo {
-                max-width: 120px;
-            }
-
-            .footer-links ul {
-                align-items: center;
-            }
-
-            .footer-social {
-                align-items: center;
-            }
-
-            .footer-social-icons {
+            .footer-social-links {
                 justify-content: center;
             }
 
-            .footer-links h3, 
-            .footer-social h3 {
-                font-size: 1.1rem;
-                margin-bottom: 0.8rem;
-            }
-
-            .footer-description {
-                font-size: 0.9rem;
-            }
-
-            .footer-links a {
-                font-size: 0.9rem;
-                padding: 8px 0;
-                display: inline-block;
+            .footer-links {
+                text-align: center;
             }
         }
 
@@ -517,23 +518,33 @@
 <body>
     <header>
         <nav>
-            <button class="mobile-menu-toggle" aria-label="Toggle Mobile Menu">
+            <div class="mobile-menu-toggle">
                 <i class="fas fa-bars"></i>
-            </button>
-            <div class="logo">Specyf</div>
-            <div class="nav-links">
-                <a href="index.html">Home</a>
-                <a href="about.html">About</a>
-                <a href="services.html">Services</a>
-                <a href="login.html">Login</a>
             </div>
-            <div class="social-icons">
-                <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://x.com/@specyf40407" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x"></i></a>
+            <a href="/" class="logo">
+                <i class="fas fa-cube"></i>
+                <span>Specyf</span>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="active">Home</a>
+                <a href="/about.html">About</a>
+                <a href="/services.html">Services</a>
+                <a href="/contact.html">Contact</a>
+                <a href="/login.html" class="login-btn">Login</a>
             </div>
         </nav>
     </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
 
     <main>
         <section class="hero" id="home">
@@ -608,78 +619,90 @@
     <footer>
         <div class="footer-content">
             <div class="footer-company-info">
-                <img src="assets/logo.png" alt="Specyf Logo" class="footer-logo">
-                <div>
-                    <h3>Specyf</h3>
-                    <p class="footer-description">Empowering businesses through innovative professional services and solutions. Your success is our priority.</p>
+                <a href="/" class="footer-logo">
+                    <i class="fas fa-cube"></i>
+                    Specyf
+                </a>
+                <p class="footer-description">
+                    Empowering businesses with innovative solutions and exceptional service. Your success is our priority.
+                </p>
+                <div class="footer-social-links">
+                    <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://x.com/@specyf40407" target="_blank" aria-label="X">
+                        <i class="fa-brands fa-square-x-twitter"></i>
+                    </a>
+                    <a href="https://linkedin.com/company/specyf" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
                 </div>
             </div>
-
-            <div class="footer-links">
+            <div class="footer-section">
                 <h3>Quick Links</h3>
-                <ul>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
-                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
-
-            <div class="footer-social">
-                <h3>Connect With Us</h3>
-                <div class="social-links">
-                    <a href="https://facebook.com/specyf" target="_blank" class="social-link">
-                        <i class="fab fa-facebook"></i>
-                        <span>Facebook</span>
-                    </a>
-                    <a href="https://instagram.com/specyf" target="_blank" class="social-link">
-                        <i class="fab fa-instagram"></i>
-                        <span>Instagram</span>
-                    </a>
-                    <a href="https://x.com/@specyf40407" target="_blank" class="social-link">
-                        <i class="fab fa-twitter"></i>
-                        <span>X (Twitter)</span>
-                    </a>
-                </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html#consulting">Consulting</a></li>
+                    <li><a href="services.html#development">Development</a></li>
+                    <li><a href="services.html#analytics">Analytics</a></li>
+                    <li><a href="services.html#marketing">Marketing</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><a href="tel:+919494908694">+91 94949 08694</a></li>
+                    <li><a href="mailto:specyf.contact@gmail.com">specyf.contact@gmail.com</a></li>
+                    <li>Kambalapeta-2</li>
+                    <li>Rajahmundry, 533101</li>
+                </ul>
             </div>
         </div>
-
         <div class="footer-bottom">
-            <p>&copy; 2024 Specyf. All Rights Reserved.</p>
+            <p>&copy; 2024 Specyf. All rights reserved.</p>
         </div>
     </footer>
 
     <script>
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Services slider animation
-        const sliderTrack = document.querySelector('.slider-track');
-        let currentPosition = 0;
-
-        function slideServices() {
-            currentPosition -= 320; // Width of card + gap
-            if (currentPosition < -(sliderTrack.scrollWidth - sliderTrack.clientWidth)) {
-                currentPosition = 0;
-            }
-            sliderTrack.style.transform = `translateX(${currentPosition}px)`;
-        }
-
-        setInterval(slideServices, 3000);
-
         // Mobile menu toggle
-        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-        const navLinks = document.querySelector('.nav-links');
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
 
-        mobileMenuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+
+            // Header scroll effect
+            const header = document.querySelector('header');
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // Set active nav link
+            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                if (link.getAttribute('href') === currentPage) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
         });
     </script>
 </body>

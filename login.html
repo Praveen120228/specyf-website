@@ -8,120 +8,62 @@
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <!-- Apple Sign-In -->
     <script type="text/javascript" src="https://appleid.cdn-apple.com/appleauth/static/jsapi/appleid/1/en_US/appleid.auth.js"></script>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        :root {
-            --primary-color: rgb(185, 54, 34);
-            --primary-light: rgba(185, 54, 34, 0.1);
-            --white: #ffffff;
-            --text-color: #333;
-            --text-color-light: #666;
-            --background-color: #f7f7f7;
+        /* Header override styles */
+        header .logo {
+            font-size: 24px !important;
+            min-width: auto !important;
         }
 
-        body {
-            margin: 0;
-            padding: 0;
-            padding-top: 64px;
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+        header .logo i {
+            font-size: 24px !important;
         }
 
-        /* Header Styles */
-        header {
-            background: var(--background-color);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            height: 64px;
+        /* Login specific styles */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
         }
 
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 100%;
+        @keyframes success {
+            0% { transform: scale(0.8); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-            text-decoration: none;
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            justify-content: center;
-            flex: 2;
-            padding: 0 20px;
-        }
-
-        .nav-links a {
-            color: #333;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 16px;
-            transition: all 0.3s ease;
-            padding: 8px 16px;
-            border-radius: 4px;
-            white-space: nowrap;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary-color);
-            background: var(--primary-light);
-        }
-
-        .social-icons {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            flex: 1;
-            justify-content: flex-end;
-            min-width: 100px;
-        }
-
-        .social-icons a {
-            color: #333;
-            text-decoration: none;
-            transition: color 0.3s ease;
-            font-size: 18px;
-        }
-
-        .social-icons a:hover {
-            color: var(--primary-color);
-        }
-
-        /* Main Content Styles */
         main {
-            flex: 1;
+            min-height: calc(100vh - 64px);
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 2rem;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--background-color) 100%);
         }
 
         .login-container {
-            background: var(--white);
-            padding: 2.5rem;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
+            padding: 2.5rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.6s var(--animation-timing);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--primary-color);
         }
 
         .login-header {
@@ -130,19 +72,28 @@
         }
 
         .login-header img {
-            max-width: 150px;
+            max-width: 120px;
+            height: auto;
             margin-bottom: 1.5rem;
         }
 
         .login-header h2 {
-            color: var(--text-color);
+            color: var(--primary-color);
             font-size: 1.75rem;
-            margin: 0;
             font-weight: 600;
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: var(--text-color-light);
+            font-size: 1rem;
+            margin: 0;
         }
 
         .form-group {
             margin-bottom: 1.5rem;
+            animation: fadeIn 0.6s var(--animation-timing);
         }
 
         .form-group label {
@@ -150,214 +101,323 @@
             margin-bottom: 0.5rem;
             color: var(--text-color);
             font-weight: 500;
+            font-size: 0.95rem;
         }
 
         .form-group input {
             width: 100%;
             padding: 0.875rem;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
             font-size: 1rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--animation-timing);
+            background: var(--background-color);
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px var(--primary-light);
+            background: var(--white);
         }
 
-        .btn {
+        .submit-btn {
             width: 100%;
-            padding: 0.875rem;
-            background-color: var(--primary-color);
+            padding: 1rem;
+            background: var(--primary-color);
             color: white;
             border: none;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s var(--animation-timing);
+            margin-top: 1rem;
         }
 
-        .btn:hover {
-            background-color: rgb(165, 48, 31);
-            transform: translateY(-1px);
+        .submit-btn:hover {
+            background: rgb(165, 48, 30);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
         }
 
         .social-login {
-            margin-top: 20px;
+            margin-top: 2rem;
             text-align: center;
+            position: relative;
+            padding-top: 1.5rem;
         }
 
-        .divider {
+        .social-login::before {
+            content: 'Or continue with';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            padding: 0 1rem;
+            color: var(--text-color-light);
+            font-size: 0.9rem;
+            z-index: 1;
+        }
+
+        .social-login::after {
+            content: '';
+            display: block;
+            height: 1px;
+            background: #ddd;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .social-btn {
+            padding: 0.75rem 1.5rem;
+            border: 1.5px solid #ddd;
+            border-radius: 8px;
+            background: var(--white);
+            color: var(--text-color);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
             display: flex;
             align-items: center;
-            text-align: center;
-            color: #666;
-            margin: 20px 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: '';
+            gap: 0.5rem;
             flex: 1;
-            border-bottom: 1px solid #ddd;
+            justify-content: center;
         }
 
-        .divider::before {
-            margin-right: 10px;
+        .social-btn:hover {
+            background: var(--background-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-color: var(--primary-color);
         }
 
-        .divider::after {
-            margin-left: 10px;
+        .social-btn i {
+            font-size: 1.2rem;
         }
 
-        .social-button {
-            margin: 10px 0;
-            width: 100%;
+        .error-message {
+            background: #fee;
+            color: #e33;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            animation: shake 0.5s var(--animation-timing);
+            display: none;
+            text-align: center;
         }
 
-        #appleid-signin {
-            margin: 0 auto;
+        .success-message {
+            background: #efe;
+            color: #3c3;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            animation: success 0.5s var(--animation-timing);
+            display: none;
+            text-align: center;
         }
 
         .register-link {
             text-align: center;
-            margin-top: 1.5rem;
+            margin-top: 2rem;
             color: var(--text-color-light);
+            font-size: 0.95rem;
         }
 
         .register-link a {
             color: var(--primary-color);
             text-decoration: none;
             font-weight: 500;
+            transition: all 0.3s var(--animation-timing);
         }
 
         .register-link a:hover {
             text-decoration: underline;
         }
 
-        #error-message {
-            display: none;
-            background-color: #fee;
-            color: #c00;
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            text-align: center;
+        /* Footer Styles */
+        footer {
+            background-color: #1a1a1a;
+            padding: 4rem 0 0;
+            color: var(--white);
         }
 
-        #success-message {
-            display: none;
-            background-color: #e6ffe6;
-            color: #006600;
-            padding: 0.75rem;
-            border-radius: 6px;
-            margin-bottom: 1rem;
-            text-align: center;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
         }
 
-        /* Mobile Styles */
-        @media screen and (max-width: 768px) {
-            header {
-                height: 60px;
-                padding: 0;
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
+        .footer-company-info {
+            max-width: 400px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            text-decoration: none;
+            margin-bottom: 1rem;
+        }
+
+        .footer-logo i {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+        }
+
+        .footer-description {
+            color: var(--white);
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.8;
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-social-links a:hover {
+            background: var(--primary-color);
+            color: var(--white);
+            transform: translateY(-3px);
+        }
+
+        .footer-section h3 {
+            color: var(--white);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--white);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+            opacity: 0.8;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+            opacity: 1;
+        }
+
+        .footer-links li:nth-last-child(1),
+        .footer-links li:nth-last-child(2) {
+            color: var(--white);
+            opacity: 0.8;
+        }
+
+        .footer-bottom {
+            margin-top: 4rem;
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-bottom p {
+            color: var(--white);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Footer */
+        @media screen and (max-width: 1024px) {
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 3rem;
             }
 
-            nav {
-                padding: 0 15px;
-                display: grid;
-                grid-template-columns: auto 1fr auto;
-                align-items: center;
-                gap: 15px;
-                height: 100%;
-            }
-
-            .mobile-menu-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                order: 1;
-                margin-right: 5px;
-            }
-
-            .logo {
-                font-size: 24px;
-                order: 2;
-                text-align: center;
-                justify-self: center;
-                margin: 0;
-                padding: 0;
-            }
-
-            .nav-links {
-                position: fixed;
-                top: 60px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 60px);
-                background: rgba(255, 255, 255, 0.98);
-                backdrop-filter: blur(10px);
-                flex-direction: column;
-                gap: 0;
-                padding: 20px;
-                transition: all 0.3s ease-in-out;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                order: 3;
-                z-index: 1000;
-            }
-
-            .nav-links.active {
-                left: 0;
-            }
-
-            .nav-links a {
-                font-size: 18px;
-                padding: 15px 20px;
-                width: 100%;
-                text-align: left;
-                border-radius: 8px;
-                margin: 5px 0;
-                transition: all 0.2s ease;
-            }
-
-            .nav-links a:hover {
-                background: var(--primary-light);
-                transform: translateX(5px);
-            }
-
-            .social-icons {
-                display: none;
-            }
-
-            /* Login Page Mobile Specific */
-            .login-container {
-                width: 90%;
+            .footer-company-info {
+                grid-column: 1 / -1;
                 max-width: none;
-                margin: 80px auto 2rem;
+                text-align: center;
+            }
+
+            .footer-logo {
+                justify-content: center;
+            }
+
+            .footer-social-links {
+                justify-content: center;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-section {
+                margin-top: 1rem;
+            }
+
+            .footer-links {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            main {
+                padding: 1rem;
+            }
+
+            .login-container {
                 padding: 1.5rem;
             }
 
-            .login-header h2 {
-                font-size: 1.8rem;
-                margin-bottom: 1rem;
+            .social-buttons {
+                flex-direction: column;
             }
 
-            .form-group label {
-                font-size: 0.9rem;
-            }
-
-            .form-group input {
-                padding: 0.8rem;
-                font-size: 1rem;
-            }
-
-            .btn {
-                padding: 0.8rem;
-                font-size: 1rem;
+            .social-btn {
+                width: 100%;
             }
         }
     </style>
@@ -365,18 +425,20 @@
 <body>
     <header>
         <nav>
-            <div class="logo">Specyf</div>
+            <div class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <a href="/" class="logo">
+                <i class="fas fa-cube"></i>
+                Specyf
+            </a>
             <div class="nav-links">
-                <a href="index.html">Home</a>
+                <a href="/">Home</a>
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
-                <a href="login.html">Login</a>
+                <a href="contact.html">Contact</a>
             </div>
-            <div class="social-icons">
-                <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
-                <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://x.com/@specyf40407" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x"></i></a>
-            </div>
+            <a href="login.html" class="login-btn active">Login</a>
         </nav>
     </header>
 
@@ -385,10 +447,11 @@
             <div class="login-header">
                 <img src="assets/logo.png" alt="Specyf Logo">
                 <h2>Welcome Back</h2>
+                <p>Please enter your credentials to continue</p>
             </div>
 
-            <div id="error-message"></div>
-            <div id="success-message"></div>
+            <div id="error-message" class="error-message"></div>
+            <div id="success-message" class="success-message"></div>
 
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
@@ -400,18 +463,19 @@
                     <input type="password" id="password" name="password" required>
                 </div>
 
-                <button type="submit" class="btn">Log In</button>
+                <button type="submit" class="submit-btn">Log In</button>
             </form>
 
             <div class="social-login">
-                <p class="divider">Or continue with</p>
-                
-                <!-- Google Sign-In Button -->
-                <div id="google-signin-button" class="social-button"></div>
-                
-                <!-- Apple Sign-In Button -->
-                <div id="apple-signin-button" class="social-button">
-                    <div id="appleid-signin" data-color="black" data-border="true" data-type="sign in"></div>
+                <div class="social-buttons">
+                    <div id="google-signin-button" class="social-btn">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </div>
+                    <div id="apple-signin-button" class="social-btn">
+                        <i class="fab fa-apple"></i>
+                        Apple
+                    </div>
                 </div>
             </div>
 
@@ -420,6 +484,64 @@
             </div>
         </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-company-info">
+                <a href="/" class="footer-logo">
+                    <i class="fas fa-cube"></i>
+                    Specyf
+                </a>
+                <p class="footer-description">
+                    Empowering businesses with innovative solutions and exceptional service. Your success is our priority.
+                </p>
+                <div class="footer-social-links">
+                    <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://x.com/@specyf40407" target="_blank" aria-label="X">
+                        <i class="fa-brands fa-x"></i>
+                    </a>
+                    <a href="https://linkedin.com/company/specyf" target="_blank" aria-label="LinkedIn">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="services.html#consulting">Consulting</a></li>
+                    <li><a href="services.html#development">Development</a></li>
+                    <li><a href="services.html#analytics">Analytics</a></li>
+                    <li><a href="services.html#marketing">Marketing</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul class="footer-links">
+                    <li><a href="tel:+919494908694">+91 94949 08694</a></li>
+                    <li><a href="mailto:specyf.contact@gmail.com">specyf.contact@gmail.com</a></li>
+                    <li>Kambalapeta-2</li>
+                    <li>Rajahmundry, 533101</li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Specyf. All rights reserved.</p>
+        </div>
+    </footer>
 
     <script>
         // Get registered users
