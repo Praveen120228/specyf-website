@@ -82,32 +82,57 @@
             background: none;
             border: none;
             color: var(--text-color);
-            font-size: 24px;
+            font-size: 28px;
             cursor: pointer;
-            padding: 0;
-            margin-left: 1rem;
+            padding: 10px;
+            margin: 0;
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background-color: var(--primary-light);
         }
 
         @media screen and (max-width: 768px) {
+            header {
+                height: 60px;
+                padding: 0 10px;
+            }
+
             nav {
-                padding: 0 1rem;
+                padding: 0;
             }
 
             .mobile-menu-toggle {
-                display: block;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                order: 1;
+            }
+
+            .logo {
+                font-size: 24px;
+                order: 2;
+                text-align: center;
+                margin: 0 auto;
             }
 
             .nav-links {
                 position: fixed;
-                top: 64px;
+                top: 60px;
                 left: -100%;
                 width: 100%;
-                height: calc(100vh - 64px);
-                background: var(--background-color);
+                height: calc(100vh - 60px);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
                 flex-direction: column;
-                gap: 1rem;
-                padding: 2rem;
-                transition: left 0.3s ease;
+                gap: 0;
+                padding: 20px;
+                transition: all 0.3s ease-in-out;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
 
             .nav-links.active {
@@ -115,22 +140,26 @@
             }
 
             .nav-links a {
-                font-size: 18px;
-                padding: 0.75rem 1.5rem;
+                font-size: 20px;
+                padding: 15px 20px;
                 width: 100%;
-                text-align: center;
+                text-align: left;
+                border-radius: 8px;
+                margin: 5px 0;
+                transition: all 0.2s ease;
+            }
+
+            .nav-links a:hover {
+                background: var(--primary-light);
+                transform: translateX(5px);
             }
 
             .social-icons {
                 display: none;
             }
 
-            .logo {
-                font-size: 20px;
-            }
-
             .payment-container {
-                margin: 80px 1rem;
+                margin: 80px 1rem 20px;
                 padding: 1.5rem;
             }
 
