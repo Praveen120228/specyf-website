@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Sitemap: https://praveen120228.github.io/specyf-website/sitemap.xml
+
+Disallow: /dashboard.html
+Disallow: /login.html
+Disallow: /signup.html
