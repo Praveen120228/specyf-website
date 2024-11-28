@@ -99,15 +99,18 @@
         @media screen and (max-width: 768px) {
             header {
                 height: 60px;
-                padding: 0 10px;
+                padding: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
             }
 
             nav {
-                padding: 0;
+                padding: 0 15px;
                 display: grid;
                 grid-template-columns: auto 1fr auto;
                 align-items: center;
-                gap: 10px;
+                gap: 15px;
+                height: 100%;
             }
 
             .mobile-menu-toggle {
@@ -115,7 +118,7 @@
                 align-items: center;
                 justify-content: center;
                 order: 1;
-                margin-right: 10px;
+                margin-right: 5px;
             }
 
             .logo {
@@ -148,7 +151,7 @@
             }
 
             .nav-links a {
-                font-size: 20px;
+                font-size: 18px;
                 padding: 15px 20px;
                 width: 100%;
                 text-align: left;
@@ -166,29 +169,147 @@
                 display: none;
             }
 
-            .payment-container {
-                margin: 80px 1rem 20px;
-                padding: 1.5rem;
+            /* Mobile Footer Styles */
+            footer {
+                padding: 2rem 1rem;
+                margin-top: 2rem;
             }
 
-            .payment-form {
-                gap: 1.25rem;
-            }
-
-            h1 {
-                font-size: 1.75rem;
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
                 text-align: center;
             }
 
-            .form-control {
-                font-size: 16px; /* Prevents zoom on iOS */
-                padding: 0.875rem;
+            .footer-company-info {
+                align-items: center;
             }
 
-            .payment-button {
-                padding: 0.875rem;
-                font-size: 1rem;
+            .footer-logo {
+                max-width: 120px;
             }
+
+            .footer-links ul {
+                align-items: center;
+            }
+
+            .footer-social {
+                align-items: center;
+            }
+
+            .footer-social-icons {
+                justify-content: center;
+            }
+
+            .footer-links h3, 
+            .footer-social h3 {
+                font-size: 1.1rem;
+                margin-bottom: 0.8rem;
+            }
+
+            .footer-description {
+                font-size: 0.9rem;
+            }
+
+            .footer-links a {
+                font-size: 0.9rem;
+                padding: 8px 0;
+                display: inline-block;
+            }
+
+            .payment-container {
+                margin: 80px 1rem 2rem;
+                padding: 1.5rem;
+            }
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--background-color);
+            padding: 4rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-company-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-logo {
+            max-width: 150px;
+            height: auto;
+        }
+
+        .footer-description {
+            color: var(--text-color-light);
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-links h3 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--text-color-light);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .footer-social {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-social h3 {
+            color: var(--text-color);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .footer-social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-social-icons a {
+            color: var(--text-color-light);
+            font-size: 1.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-social-icons a:hover {
+            color: var(--primary-color);
         }
     </style>
 </head>
@@ -240,6 +361,32 @@
             </form>
         </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-company-info">
+                <img src="logo.png" alt="Specyf Logo" class="footer-logo">
+                <p class="footer-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sit amet nulla auctor, vestibulum magna sed, convallis ex.</p>
+            </div>
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="login.html">Login</a></li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Follow Us</h3>
+                <div class="footer-social-icons">
+                    <a href="https://facebook.com/specyf" target="_blank" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="https://instagram.com/_specyf_" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://x.com/@specyf40407" target="_blank" aria-label="X (Twitter)"><i class="fa-brands fa-x"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
 
     <script>
         const form = document.getElementById('payment-form');
