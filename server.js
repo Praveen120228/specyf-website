@@ -8,11 +8,12 @@ const port = process.env.PORT || 3001;
 
 // Import routes and database
 const authRoutes = require('./routes/auth.routes');
+const adminRoutes = require('./routes/admin.routes');
 const { initDatabase } = require('./models/user.model');
 
 // Middleware
 app.use(cors({
-    origin: ['http://localhost:8000', 'http://localhost:3006'],
+    origin: ['http://localhost:8000', 'http://localhost:3001'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -20,7 +21,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname)));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Initialize database
 initDatabase()
@@ -32,6 +34,8 @@ initDatabase()
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/upload', require('./routes/upload'));
 
 // Basic route for testing
 app.get('/', (req, res) => {

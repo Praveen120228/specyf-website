@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+    const jwt = require('jsonwebtoken');
 const config = require('../config/auth.config');
 const User = require('../models/user.model');
 
@@ -25,7 +25,7 @@ const verifyToken = (req, res, next) => {
 const isAdmin = async (req, res, next) => {
     try {
         const user = await User.findById(req.userId);
-        if (user && user.role === "admin") {
+        if (user && user.isAdmin) {
             next();
             return;
         }
@@ -51,7 +51,7 @@ const isVerified = async (req, res, next) => {
         });
     } catch (error) {
         res.status(500).json({
-            message: "Unable to validate user verification status!"
+            message: "Unable to validate verification status!"
         });
     }
 };

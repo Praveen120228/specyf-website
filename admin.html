@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Specyf</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .admin-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-card h3 {
+            margin: 0 0 1rem 0;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .users-table {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .table th {
+            background: var(--gray-100);
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .table tr:hover {
+            background: var(--gray-50);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: relative;
+            background: var(--white);
+            width: 90%;
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .filter-dropdown {
+            padding: 0.75rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--gray-300);
+            border-radius: 4px;
+            background: var(--white);
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            color: white;
+            z-index: 1000;
+        }
+
+        .toast-success {
+            background: #28a745;
+        }
+
+        .toast-error {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Specyf Logo" style="height: 30px; width: auto;">
+            </div>
+            <div class="nav-right">
+                <div class="nav-icon" onclick="handleNavClick(this, 'notifications')">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                    <div class="header-dropdown notifications-dropdown">
+                        <div class="dropdown-header">
+                            <h3>Notifications</h3>
+                        </div>
+                        <div class="notifications-list">
+                            <!-- Notifications will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-icon profile-icon" onclick="handleNavClick(this, 'profile')">
+                    <div class="profile-photo-container">
+                        <img src="assets/default-avatar.png" alt="Profile" id="headerProfilePhoto" class="profile-photo">
+                    </div>
+                    <div class="header-dropdown profile-dropdown">
+                        <div class="dropdown-header">
+                            <div class="profile-info">
+                                <img src="assets/default-avatar.png" alt="Profile" id="dropdownProfilePhoto" class="profile-photo-large">
+                                <div class="profile-text">
+                                    <h3 id="profileName">Admin</h3>
+                                    <p id="profileEmail">admin@specyf.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-items">
+                            <a href="dashboard.html" class="dropdown-item">
+                                <i class="fas fa-home"></i>
+                                Dashboard
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="handleLogout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="admin.html" class="menu-item active">
+                <i class="fas fa-user-shield"></i>
+                Admin Panel
+            </a>
+            <a href="analytics.html" class="menu-item">
+                <i class="fas fa-chart-line"></i>
+                Analytics
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+            <div class="menu-item" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </div>
+        </aside>
+
+        <main class="admin-container">
+            <div class="admin-header">
+                <h2>Admin Panel</h2>
+                <button class="btn btn-edit" onclick="showAddUserModal()">
+                    <i class="fas fa-plus"></i> Add User
+                </button>
+            </div>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <h3>Total Users</h3>
+                    <div class="stat-number" id="totalUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Users</h3>
+                    <div class="stat-number" id="activeUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>New Users (Today)</h3>
+                    <div class="stat-number" id="newUsers">0</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Verified Users</h3>
+                    <div class="stat-number" id="verifiedUsers">0</div>
+                </div>
+            </div>
+
+            <div class="users-table">
+                <div class="search-bar">
+                    <input type="text" placeholder="Search users..." onkeyup="searchUsers(this.value)">
+                    <select class="filter-dropdown" onchange="filterUsers(this.value)">
+                        <option value="all">All Users</option>
+                        <option value="active">Active Users</option>
+                        <option value="inactive">Inactive Users</option>
+                        <option value="admin">Admins</option>
+                        <option value="verified">Verified</option>
+                        <option value="unverified">Unverified</option>
+                    </select>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                            <th>Role</th>
+                            <th>Joined Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <!-- Users will be added here dynamically -->
+                    </tbody>
+                </table>
+
+                <div class="pagination" id="pagination">
+                    <!-- Pagination will be added here dynamically -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add/Edit User Modal -->
+    <div class="modal" id="userModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle">Add User</h3>
+            <form id="userForm" onsubmit="handleUserSubmit(event)">
+                <div class="form-group">
+                    <label for="userName">Name</label>
+                    <input type="text" id="userName" required>
+                </div>
+                <div class="form-group">
+                    <label for="userEmail">Email</label>
+                    <input type="email" id="userEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="userPassword">Password</label>
+                    <input type="password" id="userPassword">
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="userIsAdmin">
+                        Admin privileges
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-edit">Save User</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>

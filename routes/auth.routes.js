@@ -34,6 +34,18 @@ const loginValidation = [
         .withMessage('Password is required')
 ];
 
+// Token verification middleware
+const verifyToken = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ message: 'No token provided' });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+    req.userId = decoded.id;
+    next();
+};
+
 // Register route
 router.post('/register', registerValidation, async (req, res) => {
     try {
@@ -148,16 +160,34 @@ router.post('/login', loginValidation, async (req, res) => {
     }
 });
 
-// Get current user
-router.get('/me', async (req, res) => {
+// Check authentication and admin status
+router.get('/check', verifyToken, async (req, res) => {
     try {
-        const token = req.headers.authorization?.split(' ')[1];
-        if (!token) {
-            return res.status(401).json({ message: 'No token provided' });
+        const user = await User.findOne({ where: { id: req.userId } });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
+        
+        // Return user data without sensitive information
+        const userData = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            isAdmin: user.isAdmin,
+            isVerified: user.isVerified
+        };
+        
+        res.json(userData);
+    } catch (error) {
+        console.error('Auth check error:', error);
+        res.status(500).json({ message: 'Error checking authentication status' });
+    }
+});
 
-        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
-        const user = await User.findByPk(decoded.id);
+// Get current user
+router.get('/me', verifyToken, async (req, res) => {
+    try {
+        const user = await User.findByPk(req.userId);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

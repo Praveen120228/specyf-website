@@ -175,40 +175,136 @@ async function checkAuth() {
     const token = localStorage.getItem('token');
     if (!token) {
         window.location.href = '/login.html';
-        return;
+        return false;
     }
-    
+
     try {
-        const response = await fetch(`${API_URL}/auth/me`, {
+        const response = await fetch('/api/auth/check', {
             headers: {
                 'Authorization': `Bearer ${token}`
-            },
-            credentials: 'include'
+            }
         });
-        
-        const data = await response.json();
-        
-        if (!data.success) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('userId');
-            localStorage.removeItem('userName');
-            window.location.href = '/login.html';
+
+        if (!response.ok) {
+            throw new Error('Authentication failed');
         }
+
+        const data = await response.json();
+        if (!data.isAdmin && window.location.pathname.includes('admin.html')) {
+            window.location.href = '/dashboard.html';
+            return false;
+        }
+
+        return true;
     } catch (error) {
-        console.error('Auth check error:', error);
+        console.error('Auth check failed:', error);
         window.location.href = '/login.html';
+        return false;
     }
 }
 
-function showError(message) {
-    const errorElement = document.getElementById('error-message');
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.display = 'block';
-        setTimeout(() => {
-            errorElement.style.display = 'none';
-        }, 5000);
+function updateUserInterface(userData) {
+    // Update profile photos
+    const headerPhoto = document.getElementById('headerProfilePhoto');
+    const dropdownPhoto = document.getElementById('dropdownProfilePhoto');
+    if (userData.profilePhoto) {
+        const photoUrl = userData.profilePhoto;
+        if (headerPhoto) headerPhoto.src = photoUrl;
+        if (dropdownPhoto) dropdownPhoto.src = photoUrl;
     }
+
+    // Update name and email
+    const nameElement = document.getElementById('profileName');
+    const emailElement = document.getElementById('profileEmail');
+    if (nameElement) nameElement.textContent = userData.name || 'User';
+    if (emailElement) emailElement.textContent = userData.email || '';
+}
+
+// Settings page functionality
+async function saveSettings() {
+    const settings = {
+        language: document.getElementById('language').value,
+        timezone: document.getElementById('timezone').value,
+        emailNotifications: document.getElementById('emailNotifications').checked,
+        pushNotifications: document.getElementById('pushNotifications').checked,
+        smsNotifications: document.getElementById('smsNotifications').checked,
+        profileVisibility: document.getElementById('profileVisibility').checked,
+        onlineStatus: document.getElementById('onlineStatus').checked
+    };
+
+    try {
+        const response = await fetch(`${API_URL}/settings`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(settings)
+        });
+
+        if (response.ok) {
+            showSuccess('Settings saved successfully');
+        } else {
+            throw new Error('Failed to save settings');
+        }
+    } catch (error) {
+        showError('Failed to save settings: ' + error.message);
+    }
+}
+
+async function loadSettings() {
+    try {
+        const response = await fetch(`${API_URL}/settings`, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
+        });
+        
+        if (response.ok) {
+            const settings = await response.json();
+            
+            // Apply settings to form
+            document.getElementById('language').value = settings.language || 'en';
+            document.getElementById('timezone').value = settings.timezone || 'UTC';
+            document.getElementById('emailNotifications').checked = settings.emailNotifications ?? true;
+            document.getElementById('pushNotifications').checked = settings.pushNotifications ?? true;
+            document.getElementById('smsNotifications').checked = settings.smsNotifications ?? false;
+            document.getElementById('profileVisibility').checked = settings.profileVisibility ?? true;
+            document.getElementById('onlineStatus').checked = settings.onlineStatus ?? true;
+        }
+    } catch (error) {
+        showError('Failed to load settings: ' + error.message);
+    }
+}
+
+function resetSettings() {
+    // Reset to default values
+    document.getElementById('language').value = 'en';
+    document.getElementById('timezone').value = 'UTC';
+    document.getElementById('emailNotifications').checked = true;
+    document.getElementById('pushNotifications').checked = true;
+    document.getElementById('smsNotifications').checked = false;
+    document.getElementById('profileVisibility').checked = true;
+    document.getElementById('onlineStatus').checked = true;
+    
+    showSuccess('Settings reset to default values');
+}
+
+// Utility functions for showing messages
+function showSuccess(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast success';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+function showError(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast error';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
 }
 
 // Enhanced Google Sign-In
@@ -378,4 +474,30 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleAppleSignInError(event) {
     console.error('Apple Sign-In failed:', event.detail.error);
     showError('Apple Sign-In failed. Please try again.');
+}
+
+// Logout functionality and navigation handlers
+function handleLogout() {
+    // Clear authentication token
+    localStorage.removeItem('token');
+    
+    // Clear any user data
+    localStorage.removeItem('user');
+    
+    // Redirect to login page
+    window.location.href = '/login.html';
+}
+
+function handleNavClick(element, type) {
+    // Close any open dropdowns
+    const dropdowns = document.querySelectorAll('.header-dropdown');
+    dropdowns.forEach(dropdown => {
+        if (!dropdown.classList.contains(type + '-dropdown')) {
+            dropdown.classList.remove('active');
+        }
+    });
+
+    // Toggle the clicked dropdown
+    const dropdown = element.querySelector('.' + type + '-dropdown');
+    dropdown.classList.toggle('active');
 }

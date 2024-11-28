@@ -28,9 +28,12 @@ const User = sequelize.define('User', {
         allowNull: false,
         unique: true,
         validate: {
-            isEmail: true,
-            notEmpty: true
+            isEmail: true
         }
+    },
+    isAdmin: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
     },
     password: {
         type: DataTypes.STRING,

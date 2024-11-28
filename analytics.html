@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytics - Specyf</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .analytics-container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .analytics-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .analytics-card h3 {
+            margin: 0 0 1rem 0;
+            color: var(--text-dark);
+            font-size: 1.1rem;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.9rem;
+            color: #28a745;
+        }
+
+        .stat-change.negative {
+            color: #dc3545;
+        }
+
+        .chart-container {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="assets/logo.png" alt="Specyf Logo" style="height: 30px; width: auto;">
+            </div>
+            <div class="nav-right">
+                <div class="nav-icon" onclick="handleNavClick(this, 'notifications')">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                    <div class="header-dropdown notifications-dropdown">
+                        <div class="dropdown-header">
+                            <h3>Notifications</h3>
+                        </div>
+                        <div class="notifications-list">
+                            <!-- Notifications will be added here dynamically -->
+                        </div>
+                    </div>
+                </div>
+                <div class="nav-icon profile-icon" onclick="handleNavClick(this, 'profile')">
+                    <div class="profile-photo-container">
+                        <img src="assets/default-avatar.png" alt="Profile" id="headerProfilePhoto" class="profile-photo">
+                    </div>
+                    <div class="header-dropdown profile-dropdown">
+                        <div class="dropdown-header">
+                            <div class="profile-info">
+                                <img src="assets/default-avatar.png" alt="Profile" id="dropdownProfilePhoto" class="profile-photo-large">
+                                <div class="profile-text">
+                                    <h3 id="profileName">Loading...</h3>
+                                    <p id="profileEmail">loading@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="dropdown-items">
+                            <a href="profile.html" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                Profile
+                            </a>
+                            <a href="settings.html" class="dropdown-item">
+                                <i class="fas fa-cog"></i>
+                                Settings
+                            </a>
+                            <a href="#" class="dropdown-item" onclick="handleLogout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Logout
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <aside class="sidebar">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="analytics.html" class="menu-item active">
+                <i class="fas fa-chart-line"></i>
+                Analytics
+            </a>
+            <a href="profile.html" class="menu-item">
+                <i class="fas fa-user"></i>
+                Profile
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+            <a href="help.html" class="menu-item">
+                <i class="fas fa-question-circle"></i>
+                Help Center
+            </a>
+            <div class="menu-item" onclick="handleLogout()">
+                <i class="fas fa-sign-out-alt"></i>
+                Logout
+            </div>
+        </aside>
+
+        <main class="analytics-container">
+            <h2>Analytics Overview</h2>
+            
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <h3>Total Users</h3>
+                    <div class="stat-number">1,234</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 12% from last month
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>Active Users</h3>
+                    <div class="stat-number">892</div>
+                    <div class="stat-change">
+                        <i class="fas fa-arrow-up"></i> 8% from last month
+                    </div>
+                </div>
+                
+                <div class="analytics-card">
+                    <h3>New Signups</h3>
+                    <div class="stat-number">145</div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-down"></i> 3% from last month
+                    </div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>User Growth</h3>
+                <canvas id="userGrowthChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Activity Overview</h3>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Initialize charts when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeCharts();
+            checkAuth();
+        });
+
+        function initializeCharts() {
+            // User Growth Chart
+            const userGrowthCtx = document.getElementById('userGrowthChart').getContext('2d');
+            new Chart(userGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Total Users',
+                        data: [800, 900, 1000, 1100, 1200, 1234],
+                        borderColor: 'rgb(185, 54, 34)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+
+            // Activity Chart
+            const activityCtx = document.getElementById('activityChart').getContext('2d');
+            new Chart(activityCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Posts', 'Comments', 'Likes', 'Shares'],
+                    datasets: [{
+                        label: 'Activity Count',
+                        data: [420, 350, 890, 280],
+                        backgroundColor: 'rgba(185, 54, 34, 0.7)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
