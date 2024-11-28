@@ -31,14 +31,15 @@
 
         /* Header Styles */
         header {
-            background: var(--background-color);
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
             height: 80px;
-            padding: 0 20px;
+            padding: 0;
         }
 
         nav {
@@ -49,7 +50,14 @@
             justify-content: space-between;
             align-items: center;
             height: 100%;
-            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            justify-content: center;
+            flex: 2;
         }
 
         .logo {
@@ -59,15 +67,6 @@
             text-decoration: none;
             flex: 1;
             min-width: 100px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 24px;
-            align-items: center;
-            justify-content: center;
-            flex: 2;
-            padding: 0 20px;
         }
 
         .nav-links a {
@@ -112,7 +111,7 @@
 
         .services-hero {
             position: relative;
-            padding: 120px 0 80px;
+            padding: 160px 0 80px;
             background: linear-gradient(135deg, var(--primary-color) 0%, #2c1810 100%);
             color: var(--white);
             overflow: hidden;
