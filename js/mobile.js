@@ -4,7 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         
-        if (!mobileMenuToggle || !navLinks) return;
+        // Ensure both toggle and nav links exist
+        if (!mobileMenuToggle || !navLinks) {
+            console.log('Mobile menu elements not found');
+            return;
+        }
 
         // Prevent scrolling when menu is open
         function toggleBodyScroll(isMenuOpen) {
@@ -57,6 +61,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.key === 'Escape' && navLinks.classList.contains('active')) {
                 closeMenu();
             }
+        });
+
+        // Ensure menu links close the menu when clicked
+        const menuLinks = navLinks.querySelectorAll('a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                closeMenu();
+            });
         });
     }
 
