@@ -1,28 +1,49 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Optimize touch interactions
+    function optimizeTouchTargets() {
+        const touchElements = document.querySelectorAll('a, button, .service-card, .nav-links a');
+        touchElements.forEach(el => {
+            el.addEventListener('touchstart', function(e) {
+                this.classList.add('touch-active');
+            });
+            el.addEventListener('touchend', function(e) {
+                this.classList.remove('touch-active');
+            });
+        });
+    }
+
+    // Prevent horizontal scroll on mobile
+    function preventHorizontalScroll() {
+        document.body.style.maxWidth = '100%';
+        document.body.style.overflowX = 'hidden';
+    }
+
+    // Initialize mobile optimizations
+    function initMobileOptimizations() {
+        optimizeTouchTargets();
+        preventHorizontalScroll();
+    }
+
+    // Run optimizations
+    initMobileOptimizations();
+
+    // Responsive menu toggle (if exists)
     const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
     const navLinks = document.querySelector('.nav-links');
     
     if (mobileMenuToggle && navLinks) {
         mobileMenuToggle.addEventListener('click', function() {
             navLinks.classList.toggle('active');
-            // Toggle menu icon
-            const icon = mobileMenuToggle.querySelector('i');
-            if (icon.classList.contains('fa-bars')) {
-                icon.classList.remove('fa-bars');
-                icon.classList.add('fa-times');
-            } else {
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
-            }
+            mobileMenuToggle.classList.toggle('active');
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', function(event) {
-            if (!navLinks.contains(event.target) && !mobileMenuToggle.contains(event.target) && navLinks.classList.contains('active')) {
+            if (!navLinks.contains(event.target) && 
+                !mobileMenuToggle.contains(event.target) && 
+                navLinks.classList.contains('active')) {
                 navLinks.classList.remove('active');
-                const icon = mobileMenuToggle.querySelector('i');
-                icon.classList.remove('fa-times');
-                icon.classList.add('fa-bars');
+                mobileMenuToggle.classList.remove('active');
             }
         });
     }

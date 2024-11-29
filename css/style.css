@@ -377,6 +377,8 @@ footer {
 @media screen and (max-width: 768px) {
     body {
         padding-top: 56px;
+        max-width: 100%;
+        overflow-x: hidden;
     }
 
     header {
@@ -463,6 +465,11 @@ footer {
     .service-card,
     .footer-links a {
         -webkit-tap-highlight-color: transparent;
+        min-height: 44px;
+        min-width: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     .nav-links a:active,
