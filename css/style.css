@@ -182,18 +182,23 @@ nav {
     width: 80%;
 }
 
-.login-btn {
+.nav-links .login-btn {
     background: var(--primary-color);
     color: var(--white) !important;
     padding: 8px 20px;
     border-radius: 6px;
-    transition: all 0.3s var(--animation-timing);
 }
 
-.login-btn:hover {
+.nav-links .login-btn:hover,
+.nav-links .login-btn.active {
     transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
     background: var(--primary-color) !important;
+    color: var(--white) !important;
+}
+
+.nav-links .login-btn::after {
+    display: none;
 }
 
 .mobile-menu-toggle {
