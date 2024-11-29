@@ -100,6 +100,10 @@
             color: #007bff;
         }
 
+        .logo span {
+            color: var(--primary-color);
+        }
+
         .nav-links {
             display: flex;
             gap: 30px;
@@ -168,12 +172,17 @@
         }
 
         .hero-content h1 {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+            font-size: 3.5rem;
+            font-weight: 700;
             color: var(--text-color);
+            margin-bottom: 1.5rem;
             opacity: 0;
             transform: translateY(20px);
-            animation: fadeInUp 0.8s ease forwards;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .hero-content h1 span {
+            color: var(--primary-color);
         }
 
         .hero-content p {
@@ -559,7 +568,6 @@
                 <a href="index.html" class="active">Home</a>
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
-                <a href="contact.html">Contact</a>
                 <a href="login.html" class="login-btn">Login</a>
             </div>
         </nav>
@@ -579,8 +587,8 @@
     <main>
         <section class="hero" id="home">
             <div class="hero-content">
-                <h1>Empowering Businesses with Tailored Workforce Solutions</h1>
-                <p>Manpower services for homes, industries, and companies—fast, reliable, and efficient.</p>
+                <h1>Welcome to <span>Specyf</span></h1>
+                <p>Transforming businesses through innovative solutions and strategic excellence.</p>
                 
                 <div class="cards-container">
                     <div class="info-card">
@@ -675,7 +683,6 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">

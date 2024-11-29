@@ -165,20 +165,20 @@
             background: rgb(185, 54, 34);
         }
 
-        .login-header {
+        .login-logo {
             text-align: center;
             margin-bottom: 2.5rem;
             position: relative;
             padding-top: 1.5rem;
         }
 
-        .login-header img {
+        .login-logo img {
             max-width: 120px;
             height: auto;
             margin-bottom: 1.5rem;
         }
 
-        .login-header h2 {
+        .login-logo h2 {
             color: rgb(185, 54, 34);
             font-size: 1.75rem;
             font-weight: 600;
@@ -186,26 +186,18 @@
             margin-bottom: 0.5rem;
         }
 
-        .login-header p {
+        .login-logo p {
             color: var(--text-color-light);
             font-size: 1rem;
             margin: 0;
         }
 
-        .form-group {
+        .login-form {
             margin-bottom: 1.5rem;
             animation: fadeIn 0.6s var(--animation-timing);
         }
 
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--text-color);
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .form-group input {
+        .login-form input {
             width: 100%;
             padding: 0.875rem;
             border: 1.5px solid #ddd;
@@ -215,14 +207,14 @@
             background: var(--background-color);
         }
 
-        .form-group input:focus {
+        .login-form input:focus {
             outline: none;
             border-color: rgb(185, 54, 34);
             box-shadow: 0 0 0 3px rgba(185, 54, 34, 0.1);
             background: var(--white);
         }
 
-        .login-btn {
+        .primary-button {
             width: 100%;
             background: rgb(185, 54, 34);
             color: var(--white);
@@ -235,24 +227,24 @@
             font-size: 16px;
         }
 
-        .login-btn:hover {
+        .primary-button:hover {
             background: rgb(165, 48, 30);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
         }
 
-        .login-btn:active {
+        .primary-button:active {
             transform: translateY(0);
         }
 
-        .social-login {
+        .login-options {
             margin-top: 2rem;
             text-align: center;
             position: relative;
             padding-top: 1.5rem;
         }
 
-        .social-login::before {
+        .login-options::before {
             content: 'Or continue with';
             position: absolute;
             top: -10px;
@@ -265,7 +257,7 @@
             z-index: 1;
         }
 
-        .social-login::after {
+        .login-options::after {
             content: '';
             display: block;
             height: 1px;
@@ -275,40 +267,6 @@
             left: 0;
             right: 0;
             z-index: 0;
-        }
-
-        .social-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .social-btn {
-            padding: 0.75rem 1.5rem;
-            border: 1.5px solid #ddd;
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--text-color);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s var(--animation-timing);
-            display: flex;
-            align-items: center;
-            flex: 1;
-            gap: 0.5rem;
-            justify-content: center;
-        }
-
-        .social-btn:hover {
-            background: rgba(185, 54, 34, 0.05);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(185, 54, 34, 0.1);
-            border-color: rgb(185, 54, 34);
-        }
-
-        .social-btn i {
-            font-size: 1.2rem;
         }
 
         .error-message {
@@ -333,21 +291,21 @@
             text-align: center;
         }
 
-        .register-link {
+        .signup-link {
             text-align: center;
             margin-top: 2rem;
             color: var(--text-color-light);
             font-size: 0.95rem;
         }
 
-        .register-link a {
+        .signup-link a {
             color: rgb(185, 54, 34);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s var(--animation-timing);
         }
 
-        .register-link a:hover {
+        .signup-link a:hover {
             color: rgb(165, 48, 30);
             text-decoration: underline;
         }
@@ -542,14 +500,6 @@
             .login-container {
                 padding: 1.5rem;
             }
-
-            .social-buttons {
-                flex-direction: column;
-            }
-
-            .social-btn {
-                width: 100%;
-            }
         }
     </style>
 </head>
@@ -567,7 +517,6 @@
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
-                <a href="contact.html">Contact</a>
                 <a href="login.html" class="active login-btn">Login</a>
             </div>
         </nav>
@@ -586,16 +535,13 @@
 
     <main>
         <div class="login-container">
-            <div class="login-header">
-                <img src="assets/logo.png" alt="Specyf Logo">
-                <h2>Welcome Back</h2>
-                <p>Please enter your credentials to continue</p>
+            <div class="login-logo">
+                <img src="assets/logo.png" alt="Specyf Logo" class="logo-image">
             </div>
-
-            <div id="error-message" class="error-message"></div>
-            <div id="success-message" class="success-message"></div>
-
-            <form id="loginForm" onsubmit="handleLogin(event)">
+            <h1 class="login-title">Welcome Back</h1>
+            <p class="login-subtitle">Please enter your credentials to continue</p>
+            
+            <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <input type="email" id="email" name="email" required>
@@ -604,25 +550,24 @@
                     <label for="password">Password</label>
                     <input type="password" id="password" name="password" required>
                 </div>
-
                 <button type="submit" class="login-btn">Log In</button>
             </form>
-
-            <div class="social-login">
-                <div class="social-buttons">
-                    <div id="google-signin-button" class="social-btn">
+            
+            <div class="login-options">
+                <div class="divider">
+                    <span>Or continue with</span>
+                </div>
+                <div class="social-login">
+                    <button class="social-btn google">
                         <i class="fab fa-google"></i>
                         Google
-                    </div>
-                    <div id="apple-signin-button" class="social-btn">
+                    </button>
+                    <button class="social-btn apple">
                         <i class="fab fa-apple"></i>
                         Apple
-                    </div>
+                    </button>
                 </div>
-            </div>
-
-            <div class="register-link">
-                Don't have an account? <a href="signup.html">Sign up</a>
+                <p class="signup-text">Don't have an account? <a href="#" class="signup-link">Sign up</a></p>
             </div>
         </div>
     </main>
@@ -658,7 +603,6 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -668,15 +612,6 @@
                     <li><a href="services.html#development">Development</a></li>
                     <li><a href="services.html#analytics">Analytics</a></li>
                     <li><a href="services.html#marketing">Marketing</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <ul class="footer-links">
-                    <li><a href="tel:+919494908694">+91 94949 08694</a></li>
-                    <li><a href="mailto:specyf.contact@gmail.com">specyf.contact@gmail.com</a></li>
-                    <li>Kambalapeta-2</li>
-                    <li>Rajahmundry, 533101</li>
                 </ul>
             </div>
         </div>
