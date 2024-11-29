@@ -4,14 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Specyf</title>
-    
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/style.css">
-    
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
-    <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     
     <!-- SEO Meta Tags -->
@@ -63,7 +57,105 @@
             color: var(--gray-800);
             background-color: var(--gray-100);
             margin: 0;
-            padding: 64px 0 0;
+            padding: 0;
+        }
+
+        /* Contact-specific styles */
+        .contact-hero {
+            background: var(--white);
+            padding: 6rem 2rem;
+            text-align: center;
+            margin-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            color: var(--text-color);
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s var(--animation-timing) forwards;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto;
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s var(--animation-timing) forwards;
+        }
+
+        .contact-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-form .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+            font-weight: 500;
+        }
+
+        .contact-form .form-group input,
+        .contact-form .form-group textarea {
+            width: 100%;
+            padding: 0.875rem;
+            border: 1.5px solid var(--gray-200);
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s var(--animation-timing);
+        }
+
+        .contact-form .form-group input:focus,
+        .contact-form .form-group textarea:focus {
+            outline: none;
+            border-color: rgb(185, 54, 34);
+            box-shadow: 0 0 0 3px rgba(185, 54, 34, 0.1);
+        }
+
+        .submit-btn {
+            background: rgb(185, 54, 34);
+            color: var(--white);
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s var(--animation-timing);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: rgb(165, 48, 30);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        @media screen and (max-width: 768px) {
+            .contact-hero {
+                padding: 4rem 1rem;
+                margin-top: 70px;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .contact-form {
+                margin: 2rem auto;
+                padding: 1.5rem;
+            }
         }
 
         /* Animations */
@@ -75,178 +167,6 @@
             to {
                 opacity: 1;
                 transform: translateY(0);
-            }
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        .animate-fadeInUp {
-            animation: fadeInUp 0.8s var(--animation-timing) forwards;
-            opacity: 0;
-        }
-
-        .animate-slideInLeft {
-            animation: slideInLeft 0.8s var(--animation-timing) forwards;
-            opacity: 0;
-        }
-
-        .animate-slideInRight {
-            animation: slideInRight 0.8s var(--animation-timing) forwards;
-            opacity: 0;
-        }
-
-        .delay-1 {
-            animation-delay: 0.2s;
-        }
-
-        .delay-2 {
-            animation-delay: 0.4s;
-        }
-
-        .delay-3 {
-            animation-delay: 0.6s;
-        }
-
-        /* Contact page specific styles */
-        .contact-hero {
-            background: linear-gradient(135deg, var(--primary-light), var(--white));
-            padding: 6rem 2rem 4rem;
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: 3rem;
-            color: var(--gray-800);
-            margin-bottom: 1rem;
-            line-height: 1.2;
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            color: var(--text-color-light);
-            margin-bottom: 2rem;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .contact-section {
-            padding: 4rem 0;
-            background: var(--white);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 3rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .contact-info {
-            background: var(--background-color);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s var(--animation-timing);
-        }
-
-        .contact-info:hover {
-            transform: translateY(-5px);
-        }
-
-        .contact-form {
-            background: var(--white);
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-        }
-
-        .form-group {
-            margin-bottom: 1rem;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid var(--gray-200);
-            border-radius: 4px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-
-        .submit-btn {
-            background-color: rgb(185, 54, 34);
-            color: #ffffff;
-            border: none;
-            padding: 1rem 2rem;
-            font-size: 1rem;
-            font-weight: 500;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.3s var(--animation-timing);
-            width: 100%;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
-            background-color: rgb(185, 54, 34);
-        }
-
-        .submit-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 6px rgba(185, 54, 34, 0.1);
-        }
-
-        @media (max-width: 768px) {
-            .contact-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 0 1rem;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
             }
         }
     </style>
@@ -271,17 +191,28 @@
         </nav>
     </header>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
+
     <main>
         <section class="contact-hero">
             <div class="hero-content">
-                <h1 class="animate-fadeInUp">Get in Touch</h1>
-                <p class="animate-fadeInUp delay-1">Have a question or want to work together? We'd love to hear from you.</p>
+                <h1>Get in Touch</h1>
+                <p>Have a question or want to work together? We'd love to hear from you.</p>
             </div>
         </section>
 
         <section class="contact-section">
             <div class="contact-grid">
-                <div class="contact-info animate-slideInLeft">
+                <div class="contact-info">
                     <h3>Contact Information</h3>
                     <ul class="contact-details">
                         <li>
@@ -303,7 +234,7 @@
                     </ul>
                 </div>
 
-                <div class="contact-form animate-slideInRight">
+                <div class="contact-form">
                     <form id="contactForm">
                         <div class="form-grid">
                             <div class="form-group">

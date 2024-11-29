@@ -46,16 +46,37 @@
         .logo {
             font-size: 24px;
             font-weight: bold;
-            color: #333;
+            color: rgb(185, 54, 34);
             text-decoration: none;
-            transition: all 0.4s ease;
             display: flex;
             align-items: center;
             gap: 10px;
+            transition: all 0.4s var(--animation-timing);
+        }
+
+        .logo i {
+            color: rgb(185, 54, 34);
+            transition: all 0.4s var(--animation-timing);
+            display: inline-block;
         }
 
         .logo:hover {
-            color: #007bff;
+            color: rgb(165, 48, 30);
+            transform: translateY(-2px);
+        }
+
+        .logo:hover i {
+            color: rgb(165, 48, 30);
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        .logo span {
+            display: inline-block;
+            transition: transform 0.4s var(--animation-timing);
+        }
+
+        .logo:hover span {
+            transform: scale(1.05);
         }
 
         .nav-links {
@@ -119,7 +140,7 @@
             align-items: center;
             justify-content: center;
             padding: 2rem;
-            background: linear-gradient(135deg, var(--primary-light) 0%, var(--background-color) 100%);
+            background: linear-gradient(135deg, rgba(185, 54, 34, 0.1) 0%, var(--background-color) 100%);
         }
 
         .login-container {
@@ -128,7 +149,7 @@
             padding: 2.5rem;
             background: var(--white);
             border-radius: 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(185, 54, 34, 0.1);
             animation: fadeIn 0.6s var(--animation-timing);
             position: relative;
             overflow: hidden;
@@ -141,12 +162,14 @@
             left: 0;
             right: 0;
             height: 4px;
-            background: var(--primary-color);
+            background: rgb(185, 54, 34);
         }
 
         .login-header {
             text-align: center;
             margin-bottom: 2.5rem;
+            position: relative;
+            padding-top: 1.5rem;
         }
 
         .login-header img {
@@ -156,7 +179,7 @@
         }
 
         .login-header h2 {
-            color: var(--primary-color);
+            color: rgb(185, 54, 34);
             font-size: 1.75rem;
             font-weight: 600;
             margin: 0;
@@ -194,29 +217,32 @@
 
         .form-group input:focus {
             outline: none;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px var(--primary-light);
+            border-color: rgb(185, 54, 34);
+            box-shadow: 0 0 0 3px rgba(185, 54, 34, 0.1);
             background: var(--white);
         }
 
-        .submit-btn {
+        .login-btn {
             width: 100%;
-            padding: 1rem;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
+            background: rgb(185, 54, 34);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
             transition: all 0.3s var(--animation-timing);
-            margin-top: 1rem;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
         }
 
-        .submit-btn:hover {
+        .login-btn:hover {
             background: rgb(165, 48, 30);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
+        }
+
+        .login-btn:active {
+            transform: translateY(0);
         }
 
         .social-login {
@@ -269,16 +295,16 @@
             transition: all 0.3s var(--animation-timing);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
             flex: 1;
+            gap: 0.5rem;
             justify-content: center;
         }
 
         .social-btn:hover {
-            background: var(--background-color);
+            background: rgba(185, 54, 34, 0.05);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(185, 54, 34, 0.1);
+            border-color: rgb(185, 54, 34);
         }
 
         .social-btn i {
@@ -286,10 +312,10 @@
         }
 
         .error-message {
+            border-radius: 8px;
             background: #fee;
             color: #e33;
             padding: 1rem;
-            border-radius: 8px;
             margin-bottom: 1rem;
             animation: shake 0.5s var(--animation-timing);
             display: none;
@@ -297,10 +323,10 @@
         }
 
         .success-message {
+            border-radius: 8px;
             background: #efe;
             color: #3c3;
             padding: 1rem;
-            border-radius: 8px;
             margin-bottom: 1rem;
             animation: success 0.5s var(--animation-timing);
             display: none;
@@ -315,14 +341,41 @@
         }
 
         .register-link a {
-            color: var(--primary-color);
+            color: rgb(185, 54, 34);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s var(--animation-timing);
         }
 
         .register-link a:hover {
+            color: rgb(165, 48, 30);
             text-decoration: underline;
+        }
+
+        /* Logo styles */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 24px;
+            font-weight: 700;
+            color: rgb(185, 54, 34);
+            text-decoration: none;
+            transition: all 0.3s var(--animation-timing);
+        }
+
+        .logo i {
+            color: rgb(185, 54, 34);
+            font-size: 28px;
+        }
+
+        .logo:hover {
+            transform: translateY(-2px);
+            color: rgb(165, 48, 30);
+        }
+
+        .logo:hover i {
+            color: rgb(165, 48, 30);
         }
 
         /* Footer Styles */
@@ -508,17 +561,28 @@
             </div>
             <a href="index.html" class="logo">
                 <i class="fas fa-cube"></i>
-                Specyf
+                <span>Specyf</span>
             </a>
             <div class="nav-links">
                 <a href="index.html">Home</a>
                 <a href="about.html">About</a>
                 <a href="services.html">Services</a>
                 <a href="contact.html">Contact</a>
-                <a href="login.html" class="active">Login</a>
+                <a href="login.html" class="active login-btn">Login</a>
             </div>
         </nav>
     </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        });
+    </script>
 
     <main>
         <div class="login-container">
@@ -541,7 +605,7 @@
                     <input type="password" id="password" name="password" required>
                 </div>
 
-                <button type="submit" class="submit-btn">Log In</button>
+                <button type="submit" class="login-btn">Log In</button>
             </form>
 
             <div class="social-login">
