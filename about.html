@@ -293,6 +293,7 @@
                 <a href="index.html">Home</a>
                 <a href="about.html" class="active">About</a>
                 <a href="services.html">Services</a>
+                <a href="contact.html">Contact</a>
                 <a href="login.html" class="login-btn">Login</a>
             </div>
         </nav>
@@ -303,8 +304,38 @@
             const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
             const navLinks = document.querySelector('.nav-links');
 
-            mobileMenuToggle.addEventListener('click', function() {
+            function toggleMenu() {
                 navLinks.classList.toggle('active');
+                document.body.style.overflow = navLinks.classList.contains('active') ? 'hidden' : 'auto';
+                
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            }
+
+            mobileMenuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (navLinks.classList.contains('active') && 
+                    !navLinks.contains(event.target) && 
+                    !mobileMenuToggle.contains(event.target)) {
+                    toggleMenu();
+                }
+            });
+
+            // Close menu when clicking on a link
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (navLinks.classList.contains('active')) {
+                        toggleMenu();
+                    }
+                });
             });
         });
     </script>
