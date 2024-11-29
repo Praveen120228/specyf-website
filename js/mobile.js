@@ -1,25 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Optimize touch interactions
-    function optimizeTouchTargets() {
-        const touchElements = document.querySelectorAll('a, button, .service-card, .nav-links a');
-        touchElements.forEach(el => {
-            el.addEventListener('touchstart', function(e) {
-                this.classList.add('touch-active');
-            });
-            el.addEventListener('touchend', function(e) {
-                this.classList.remove('touch-active');
-            });
-        });
-    }
+    // Universal Mobile Menu Functionality
+    function setupMobileMenu() {
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        if (!mobileMenuToggle || !navLinks) return;
 
-    // Mobile Menu Toggle
-    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
-    
-    if (mobileMenuToggle && navLinks) {
         // Prevent scrolling when menu is open
         function toggleBodyScroll(isMenuOpen) {
             document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
+        }
+
+        // Close menu function
+        function closeMenu() {
+            navLinks.classList.remove('active');
+            toggleBodyScroll(false);
+            
+            // Reset menu icon
+            const icon = mobileMenuToggle.querySelector('i');
+            if (icon) {
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
         }
 
         // Toggle menu visibility
@@ -32,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Toggle body scroll
             toggleBodyScroll(navLinks.classList.contains('active'));
             
-            // Optional: Toggle menu icon
+            // Toggle menu icon
             const icon = mobileMenuToggle.querySelector('i');
             if (icon) {
                 icon.classList.toggle('fa-bars');
@@ -46,20 +48,28 @@ document.addEventListener('DOMContentLoaded', function() {
             if (navLinks.classList.contains('active') && 
                 !navLinks.contains(event.target) && 
                 !mobileMenuToggle.contains(event.target)) {
-                
-                // Remove active class
-                navLinks.classList.remove('active');
-                
-                // Restore body scroll
-                toggleBodyScroll(false);
-                
-                // Reset menu icon if applicable
-                const icon = mobileMenuToggle.querySelector('i');
-                if (icon) {
-                    icon.classList.remove('fa-times');
-                    icon.classList.add('fa-bars');
-                }
+                closeMenu();
             }
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape' && navLinks.classList.contains('active')) {
+                closeMenu();
+            }
+        });
+    }
+
+    // Optimize touch interactions
+    function optimizeTouchTargets() {
+        const touchElements = document.querySelectorAll('a, button, .service-card, .nav-links a');
+        touchElements.forEach(el => {
+            el.addEventListener('touchstart', function(e) {
+                this.classList.add('touch-active');
+            });
+            el.addEventListener('touchend', function(e) {
+                this.classList.remove('touch-active');
+            });
         });
     }
 
@@ -71,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Initialize mobile optimizations
     function initMobileOptimizations() {
+        setupMobileMenu();
         optimizeTouchTargets();
         preventHorizontalScroll();
     }
