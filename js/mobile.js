@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
         const navLinks = document.querySelector('.nav-links');
         
-        // Ensure both toggle and nav links exist
         if (!mobileMenuToggle || !navLinks) {
             console.log('Mobile menu elements not found');
             return;
@@ -20,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
             navLinks.classList.remove('active');
             toggleBodyScroll(false);
             
-            // Reset menu icon
             const icon = mobileMenuToggle.querySelector('i');
             if (icon) {
                 icon.classList.remove('fa-times');
@@ -28,27 +26,49 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
 
-        // Toggle menu visibility
-        mobileMenuToggle.addEventListener('click', function(e) {
-            e.stopPropagation(); // Prevent immediate closing
+        // Touch event handling
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        // Add touch events for swipe gestures
+        navLinks.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        navLinks.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        // Handle swipe gesture
+        function handleSwipe() {
+            const SWIPE_THRESHOLD = 50;
+            const swipeDistance = touchEndX - touchStartX;
             
-            // Toggle active class for slide-in effect
-            navLinks.classList.toggle('active');
-            
-            // Toggle body scroll
-            toggleBodyScroll(navLinks.classList.contains('active'));
-            
-            // Toggle menu icon
-            const icon = mobileMenuToggle.querySelector('i');
-            if (icon) {
-                icon.classList.toggle('fa-bars');
-                icon.classList.toggle('fa-times');
+            if (swipeDistance > SWIPE_THRESHOLD) {
+                // Swipe right - close menu
+                closeMenu();
             }
+        }
+
+        // Toggle menu visibility with improved animation
+        mobileMenuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            requestAnimationFrame(() => {
+                navLinks.classList.toggle('active');
+                toggleBodyScroll(navLinks.classList.contains('active'));
+                
+                const icon = mobileMenuToggle.querySelector('i');
+                if (icon) {
+                    icon.classList.toggle('fa-bars');
+                    icon.classList.toggle('fa-times');
+                }
+            });
         });
 
         // Close menu when clicking outside
         document.addEventListener('click', function(event) {
-            // Check if menu is open and click is outside nav and toggle
             if (navLinks.classList.contains('active') && 
                 !navLinks.contains(event.target) && 
                 !mobileMenuToggle.contains(event.target)) {
@@ -57,16 +77,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         // Close menu on escape key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && navLinks.classList.contains('active')) {
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && navLinks.classList.contains('active')) {
                 closeMenu();
             }
         });
 
-        // Ensure menu links close the menu when clicked
-        const menuLinks = navLinks.querySelectorAll('a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', function() {
+        // Handle navigation links
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
                 closeMenu();
             });
         });
@@ -74,28 +93,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Optimize touch interactions
     function optimizeTouchTargets() {
-        const touchElements = document.querySelectorAll('a, button, .service-card, .nav-links a');
-        touchElements.forEach(el => {
-            el.addEventListener('touchstart', function(e) {
-                this.classList.add('touch-active');
+        const touchTargets = document.querySelectorAll('button, .button, .nav-links a, .card, .service-card');
+        
+        touchTargets.forEach(target => {
+            // Add touch feedback
+            target.addEventListener('touchstart', () => {
+                target.style.transform = 'scale(0.98)';
+            }, { passive: true });
+
+            target.addEventListener('touchend', () => {
+                target.style.transform = 'scale(1)';
+            }, { passive: true });
+
+            // Ensure minimum touch target size
+            if (target.offsetWidth < 48 || target.offsetHeight < 48) {
+                target.style.minWidth = '48px';
+                target.style.minHeight = '48px';
+            }
+        });
+    }
+
+    // Lazy load images
+    function lazyLoadImages() {
+        const images = document.querySelectorAll('img[data-src]');
+        
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.removeAttribute('data-src');
+                    observer.unobserve(img);
+                }
             });
-            el.addEventListener('touchend', function(e) {
-                this.classList.remove('touch-active');
+        });
+
+        images.forEach(img => imageObserver.observe(img));
+    }
+
+    // Smooth scrolling for anchor links
+    function setupSmoothScrolling() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
             });
         });
     }
 
-    // Prevent horizontal scroll on mobile
-    function preventHorizontalScroll() {
-        document.body.style.maxWidth = '100%';
-        document.body.style.overflowX = 'hidden';
-    }
-
-    // Initialize mobile optimizations
+    // Initialize all mobile optimizations
     function initMobileOptimizations() {
         setupMobileMenu();
         optimizeTouchTargets();
-        preventHorizontalScroll();
+        lazyLoadImages();
+        setupSmoothScrolling();
     }
 
     // Run optimizations
