@@ -390,26 +390,28 @@ footer {
     }
 
     .nav-links {
+        display: none;
         position: fixed;
         top: 56px;
-        left: -100%;
+        left: 0;
         width: 100%;
         height: calc(100vh - 56px);
         background: var(--white);
         flex-direction: column;
         padding: 2rem;
-        transition: left 0.3s var(--animation-timing);
-        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        animation: slideIn 0.3s ease;
     }
 
     .nav-links.active {
-        left: 0;
+        display: flex;
     }
 
     .mobile-menu-toggle {
         display: block;
-        font-size: 24px;
         cursor: pointer;
+        z-index: 1100;
     }
 
     .hero {
@@ -476,5 +478,16 @@ footer {
     .cta-button:active,
     .service-card:active {
         transform: scale(0.98);
+    }
+}
+
+@keyframes slideIn {
+    from { 
+        opacity: 0;
+        transform: translateX(-100%);
+    }
+    to { 
+        opacity: 1;
+        transform: translateX(0);
     }
 }
