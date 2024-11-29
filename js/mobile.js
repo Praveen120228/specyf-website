@@ -17,12 +17,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelector('.nav-links');
     
     if (mobileMenuToggle && navLinks) {
+        // Prevent scrolling when menu is open
+        function toggleBodyScroll(isMenuOpen) {
+            document.body.style.overflow = isMenuOpen ? 'hidden' : 'auto';
+        }
+
         // Toggle menu visibility
         mobileMenuToggle.addEventListener('click', function(e) {
             e.stopPropagation(); // Prevent immediate closing
+            
+            // Toggle active class for slide-in effect
             navLinks.classList.toggle('active');
             
-            // Optional: Toggle menu icon if you want visual feedback
+            // Toggle body scroll
+            toggleBodyScroll(navLinks.classList.contains('active'));
+            
+            // Optional: Toggle menu icon
             const icon = mobileMenuToggle.querySelector('i');
             if (icon) {
                 icon.classList.toggle('fa-bars');
@@ -36,7 +46,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (navLinks.classList.contains('active') && 
                 !navLinks.contains(event.target) && 
                 !mobileMenuToggle.contains(event.target)) {
+                
+                // Remove active class
                 navLinks.classList.remove('active');
+                
+                // Restore body scroll
+                toggleBodyScroll(false);
                 
                 // Reset menu icon if applicable
                 const icon = mobileMenuToggle.querySelector('i');
