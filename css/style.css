@@ -18,6 +18,57 @@
     to { opacity: 1; }
 }
 
+@keyframes headerSlideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes logoSpin {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes navLinkFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mobileMenuSlideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes mobileMenuFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 body {
     margin: 0;
     padding: 64px 0 0;
@@ -30,7 +81,7 @@ body {
 }
 
 header {
-    background: var(--background-color);
+    background: var(--white);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     position: fixed;
     width: 100%;
@@ -38,6 +89,7 @@ header {
     z-index: 1000;
     height: 64px;
     transition: all 0.3s var(--animation-timing);
+    animation: headerSlideDown 0.8s var(--animation-timing);
 }
 
 nav {
@@ -55,20 +107,28 @@ nav {
     font-weight: bold;
     color: var(--primary-color);
     text-decoration: none;
-    flex: 1;
-    min-width: 100px;
     display: flex;
     align-items: center;
     gap: 8px;
-    transition: transform 0.3s var(--animation-timing);
-}
-
-.logo:hover {
-    transform: translateY(-1px);
+    transition: all 0.3s var(--animation-timing);
 }
 
 .logo i {
     font-size: 28px;
+    transition: transform 0.6s var(--animation-timing);
+}
+
+.logo:hover i {
+    transform: rotateY(360deg);
+}
+
+.logo span {
+    display: inline-block;
+    transition: transform 0.3s var(--animation-timing);
+}
+
+.logo:hover span {
+    transform: translateX(5px);
 }
 
 .nav-links {
@@ -76,9 +136,7 @@ nav {
     gap: 24px;
     align-items: center;
     justify-content: center;
-    flex: 2;
     padding: 0 20px;
-    animation: fadeIn 0.6s var(--animation-timing);
 }
 
 .nav-links a {
@@ -91,12 +149,20 @@ nav {
     border-radius: 4px;
     white-space: nowrap;
     position: relative;
+    animation: navLinkFadeIn 0.5s var(--animation-timing) backwards;
 }
+
+.nav-links a:nth-child(1) { animation-delay: 0.1s; }
+.nav-links a:nth-child(2) { animation-delay: 0.2s; }
+.nav-links a:nth-child(3) { animation-delay: 0.3s; }
+.nav-links a:nth-child(4) { animation-delay: 0.4s; }
+.nav-links a:nth-child(5) { animation-delay: 0.5s; }
 
 .nav-links a:hover,
 .nav-links a.active {
     color: var(--primary-color);
     background: var(--primary-light);
+    transform: translateY(-2px);
 }
 
 .nav-links a::after {
@@ -125,7 +191,7 @@ nav {
 }
 
 .login-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) !important;
     box-shadow: 0 4px 12px rgba(185, 54, 34, 0.2);
     background: var(--primary-color) !important;
 }
@@ -430,7 +496,26 @@ footer {
         left: 0; /* Slide in from left */
         opacity: 1;
         visibility: visible;
+        animation: mobileMenuSlideIn 0.3s var(--animation-timing);
     }
+
+    .nav-links a {
+        font-size: 18px;
+        padding: 12px 20px;
+        width: 100%;
+        text-align: center;
+        animation: none;
+    }
+
+    .nav-links.active a {
+        animation: mobileMenuFadeIn 0.3s var(--animation-timing) backwards;
+    }
+
+    .nav-links.active a:nth-child(1) { animation-delay: 0.1s; }
+    .nav-links.active a:nth-child(2) { animation-delay: 0.2s; }
+    .nav-links.active a:nth-child(3) { animation-delay: 0.3s; }
+    .nav-links.active a:nth-child(4) { animation-delay: 0.4s; }
+    .nav-links.active a:nth-child(5) { animation-delay: 0.5s; }
 }
 
 @media (min-width: 769px) {
@@ -469,16 +554,5 @@ footer {
     .cta-button:active,
     .service-card:active {
         transform: scale(0.98);
-    }
-}
-
-@keyframes slideIn {
-    from { 
-        transform: translateX(-100%);
-        opacity: 0;
-    }
-    to { 
-        transform: translateX(0);
-        opacity: 1;
     }
 }
